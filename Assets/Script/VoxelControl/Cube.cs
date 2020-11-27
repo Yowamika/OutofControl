@@ -51,16 +51,6 @@ public class Cube : MonoBehaviour
         this.rigid.AddExplosionForce(power, center, radius);
         // 軽量化処理
         // 接しているオブジェクトを取得
-        //Cube[] cubes = DirectorObject.GirthCheck(this);
-        //// そのオブジェクトが可視状態かを取得
-        //foreach(var c in cubes)
-        //{
-        //    if(!c.GetVisable())
-        //    {
-        //        DirectorObject.CheckVisible(c);
-        //    }
-            
-        //}
            
     }
     // ------------------------------------------------------
@@ -81,6 +71,8 @@ public class Cube : MonoBehaviour
             mesh.enabled = true;
             // 削除申請を出しておく（消されるのは数秒後
             Destroy(this.gameObject, DestroyTime);
+            // フリーズを解除
+            rigid.constraints = RigidbodyConstraints.None;
         }
     }
 

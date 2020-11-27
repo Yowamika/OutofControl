@@ -40,7 +40,7 @@ public class GrenadeThrow : MonoBehaviour
     void Start()
     {
         carRigid = this.GetComponent<Rigidbody>();
-        audioSource.GetComponent<AudioSource>();
+        audioSource = this.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame

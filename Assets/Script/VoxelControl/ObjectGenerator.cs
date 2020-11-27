@@ -69,7 +69,7 @@ public class ObjectGenerator : MonoBehaviour
 
     // ステージがロードできたかどうか
     bool isStageLoaded = false;
-        // ステージID
+    // ステージID
     int stageID = 1;
     // 存在するオブジェクトの種類
     enum ObjectType
@@ -345,7 +345,7 @@ public class ObjectGenerator : MonoBehaviour
         }
     }
     // ---------------------------------------------------
-    // 周りにあるオブジェクトを取得
+    // 全体をもとに周りにあるオブジェクトを取得
     // cubeList キューブ全体のリスト
     public Cube[] GirthCheck(Cube cube)
     {
@@ -353,6 +353,62 @@ public class ObjectGenerator : MonoBehaviour
         List<Cube> cubes = new List<Cube>();
         // 現在登録されているキューブから検索
         foreach (var v in cubeList)
+        {
+            // 右チェック
+            if (cube.transform.position.x + 1 == v.transform.position.x &&
+                cube.transform.position.y == v.transform.position.y &&
+                cube.transform.position.z == v.transform.position.z)
+            {
+                cubes.Add(v);
+            }
+            // 左チェック
+            if (cube.transform.position.x - 1 == v.transform.position.x &&
+                cube.transform.position.y == v.transform.position.y &&
+                cube.transform.position.z == v.transform.position.z)
+            {
+                cubes.Add(v);
+            }
+            // 上チェック
+            if (cube.transform.position.x == v.transform.position.x &&
+                cube.transform.position.y + 1 == v.transform.position.y &&
+                cube.transform.position.z == v.transform.position.z)
+            {
+                cubes.Add(v);
+            }
+            // 下チェック
+            if (cube.transform.position.x == v.transform.position.x &&
+                cube.transform.position.y - 1 == v.transform.position.y &&
+                cube.transform.position.z == v.transform.position.z)
+            {
+                cubes.Add(v);
+            }
+            // 奥チェック
+            if (cube.transform.position.x == v.transform.position.x &&
+                cube.transform.position.y == v.transform.position.y &&
+                cube.transform.position.z + 1 == v.transform.position.z)
+            {
+                cubes.Add(v);
+            }
+            // 手前チェック
+            if (cube.transform.position.x == v.transform.position.x &&
+                cube.transform.position.y == v.transform.position.y &&
+                cube.transform.position.z - 1 == v.transform.position.z)
+            {
+                cubes.Add(v);
+            }
+        }
+        return cubes.ToArray();
+    }
+
+    // ---------------------------------------------------
+    // 親をもとに周りにあるオブジェクトを取得
+    // cubeList キューブ全体のリスト
+    public Cube[] GirthCheck(GameObject root,Cube cube)
+    {
+        // 戻り値用リスト
+        List<Cube> cubes = new List<Cube>();
+        // 現在登録されているキューブから検索
+        foreach (var v in root.GetComponentsInChildren<Cube>())
         {
             // 右チェック
             if (cube.transform.position.x + 1 == v.transform.position.x &&
@@ -438,14 +494,6 @@ public class ObjectGenerator : MonoBehaviour
             Debug.Log("error:cubeHolder.GetMaterialMultipleNum()");
             return 0;
         }
-    }
-    // ----------------------------------------------------
-    // オブジェクトを分離する
-    // 
-    // 起点となるCube　cube
-    void CubeSprit(Cube cube)
-    {
-
     }
     // ステージロード中画面コルーチン
     IEnumerator LoadStage()
