@@ -5,18 +5,12 @@ using UnityEngine;
 public class GrenadeScript : MonoBehaviour
 {
     ObjectGenerator generator;
-    // ゲームディレクター
-    GameDirector gameDirector;
-    [SerializeField]
-    AudioClip clip;
-    AudioSource audioSource;
+   
     // Start is called before the first frame update
     public void Start()
     {
         // ディレクタ―オブジェクトを取得
         generator = GameObject.Find("Director").GetComponent<ObjectGenerator>();
-        gameDirector = GameObject.Find("Director").GetComponent<GameDirector>();
-        audioSource = this.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -35,7 +29,6 @@ public class GrenadeScript : MonoBehaviour
             foreach (var c in cubes)
             {
                 c.ExplodeMe(1000f, this.transform.position, 15f);
-                audioSource.PlayOneShot(clip);
             }
             Destroy(this.gameObject);
         }

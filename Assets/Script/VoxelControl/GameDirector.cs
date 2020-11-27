@@ -20,10 +20,12 @@ public class GameDirector : MonoBehaviour
     [SerializeField]
     GameObject goalText;
     // ゲーム始まる
-    public bool gameStart = false;
+    bool gameStart = false;
     // カウントダウン開始
     bool countDownStart = false;
-    // 
+
+    [SerializeField]
+    AudioClip countdown;
     [SerializeField]
     AudioClip bgm;
 
@@ -43,20 +45,17 @@ public class GameDirector : MonoBehaviour
         {
             goalText.SetActive(true);
         }
-        if(!audioSource.isPlaying && countDownStart)
+        if (gameStart)
         {
-            audioSource.PlayOneShot(bgm);
+            audioSource.PlayOneShot(countdown);
+            if(!audioSource.isPlaying)
+            {
+                audioSource.PlayOneShot(bgm);
+            }
         }
-        gameStart = true;
-    }
-    public void CountStart()
-    {
-        countDownStart = true;
-        audioSource.PlayOneShot(bgm);
     }
     public void SetGameStart()
     {
         gameStart = true;
-        
     }
 }

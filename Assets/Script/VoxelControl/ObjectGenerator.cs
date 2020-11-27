@@ -439,6 +439,14 @@ public class ObjectGenerator : MonoBehaviour
             return 0;
         }
     }
+    // ----------------------------------------------------
+    // オブジェクトを分離する
+    // 
+    // 起点となるCube　cube
+    void CubeSprit(Cube cube)
+    {
+
+    }
     // ステージロード中画面コルーチン
     IEnumerator LoadStage()
     {
@@ -491,7 +499,7 @@ public class ObjectGenerator : MonoBehaviour
                 // マテリアルを適用;
                 go.GetComponentInChildren<Renderer>().material = materialList[m][d[(int)DataType.MATERIAL]];
                 // オブジェクト番号０(四角）以外なら
-                if (d[(int)DataType.OBJECT] != (int)ObjectType.CUBE && d[(int)DataType.OBJECT] != (int)ObjectType.STAGE)
+                if (d[(int)DataType.OBJECT] != (int)ObjectType.CUBE && d[(int)DataType.OBJECT] == (int)ObjectType.STAGE)
                 {
                     // 回転を適用
                     go.transform.localEulerAngles = rotationList[d[(int)DataType.ROTATION]];
@@ -532,7 +540,6 @@ public class ObjectGenerator : MonoBehaviour
         //        i++;
         //    }
         //}
-        this.GetComponent<GameDirector>().CountStart();
         loadUI.SetActive(false);
         yield break;
     }
