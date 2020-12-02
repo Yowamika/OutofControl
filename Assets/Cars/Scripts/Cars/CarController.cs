@@ -3,7 +3,7 @@ using UnityEngine;
 
 #pragma warning disable 649
 
-namespace UnityStandardAssets.Vehicles.Car
+namespace Car
 {
 
     // 車の動き方を設定する定数
@@ -61,16 +61,21 @@ namespace UnityStandardAssets.Vehicles.Car
         // ブレーキ時の回転数
         [SerializeField] private float m_BrakeTorque;
 
-
+        // 回転させるためのメッシュ
         private Quaternion[] m_WheelMeshLocalRotations;
+        // 過去と現在の座標
         private Vector3 m_Prevpos, m_Pos;
+        // 旋回角
         private float m_SteerAngle;
+        // ギアの番号
         private int m_GearNum;
+        // 
         private float m_GearFactor;
         private float m_OldRotation;
         private float m_CurrentTorque;
         private Rigidbody m_Rigidbody;
         private const float k_ReversingThreshold = 0.01f;
+
 
         public bool Skidding { get; private set; }
         public float BrakeInput { get; private set; }

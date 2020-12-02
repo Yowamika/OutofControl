@@ -25,7 +25,6 @@ public class CubeSprit : MonoBehaviour
     public void CheckSplit(GameObject root)
     {
         List<GameObject> children = new List<GameObject>();
-        Debug.Log("きてはります？");
         // 親分離処理
         GenerateRootObject(root);
     }
@@ -71,7 +70,6 @@ public class CubeSprit : MonoBehaviour
         // 終了処理
         if (cubes.Count == 0)
             return save.ToArray();
-        Debug.Log("ぬあ");
         return ObjectSplit(root, save, newRoot);
     }
 }

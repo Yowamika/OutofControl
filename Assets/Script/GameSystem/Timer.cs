@@ -13,6 +13,9 @@ public class Timer : MonoBehaviour
     private float oldSeconds;
     //　タイマー表示用テキスト
     private Text timerText;
+    // ロード
+    [SerializeField]
+    private ObjectGenerator load;
 
     void Start()
     {
@@ -24,17 +27,20 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        seconds += Time.deltaTime;
-        if (seconds >= 60.0f)
+        if (load.GetStageLoad())
         {
-            minute++;
-            seconds = seconds - 60.0f;
+            seconds += Time.deltaTime;
+            if (seconds >= 60.0f)
+            {
+                minute++;
+                seconds = seconds - 60.0f;
+            }
+            //　値が変わった時だけテキストUIを更新
+            if ((int)seconds != (int)oldSeconds)
+            {
+                timerText.text = minute.ToString("00") + ":" + ((int)seconds).ToString("00");
+            }
+            oldSeconds = seconds;
         }
-        //　値が変わった時だけテキストUIを更新
-        if ((int)seconds != (int)oldSeconds)
-        {
-            timerText.text = minute.ToString("00") + ":" + ((int)seconds).ToString("00");
-        }
-        oldSeconds = seconds;
     }
 }

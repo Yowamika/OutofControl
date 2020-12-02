@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 #pragma warning disable 649
-namespace UnityStandardAssets.Vehicles.Car
+namespace Car
 {
     public class SkidTrail : MonoBehaviour
     {

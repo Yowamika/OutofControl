@@ -44,11 +44,11 @@ public class GrenadeScript : MonoBehaviour
             {
                 c.ExplodeMe(1000f, this.transform.position, 15f);
             }
-            if(collision.gameObject.CompareTag("Block") && root)
-            {
-                // オブジェクトの分離処理
-                spritter.CheckSplit(root);
-            }
+            //if(collision.gameObject.CompareTag("Block") && root)
+            //{
+            //    // オブジェクトの分離処理
+            //    spritter.CheckSplit(root);
+            //}
             Destroy(this.gameObject);
         }
     }

@@ -16,21 +16,30 @@ public class Cube : MonoBehaviour
     Rigidbody rigid;
     // メッシュレンダラー
     MeshRenderer mesh;
+    // ジョイント情報
+    FixedJoint joint;
     // 破片となった時の大きさ
     const float FragmentScale = 80f;
     // 削除命令が出てから消えるまでの時間
     const float DestroyTime = 5.0f;
-    //// オブジェクトが吹き飛ぶ威力
-    //const float ExpPower = 300.0f;
 
     // ---------------------------------------------------
     // このオブジェクトが有効になった時
     private void OnEnable()
     {
+        // 各コンポーネント取得
         DirectorObject = GameObject.Find("Director").GetComponent<ObjectGenerator>();
-        bCol = GetComponent<BoxCollider>();
-        rigid = GetComponent<Rigidbody>();
-        mesh = GetComponent<MeshRenderer>();
+        bCol  = this.GetComponent<BoxCollider>();
+        rigid = this.GetComponent<Rigidbody>();
+        mesh  = this.GetComponent<MeshRenderer>();
+        joint = this.GetComponent<FixedJoint>();
+    }
+    // ---------------------------------------------------
+    // 最初のフレーム
+    private void Start()
+    {
+       // ジョイントにenableプロパティは存在しない
+       // 削除　後　再生成が唯一の手
     }
     // ---------------------------------------------------
     // アップデート関数
@@ -71,8 +80,8 @@ public class Cube : MonoBehaviour
             mesh.enabled = true;
             // 削除申請を出しておく（消されるのは数秒後
             Destroy(this.gameObject, DestroyTime);
-            // フリーズを解除
-            rigid.constraints = RigidbodyConstraints.None;
+            // ジョイントを絶つ
+            Destroy(joint);
         }
     }
 

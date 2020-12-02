@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityStandardAssets.Vehicles.Car
+namespace Car
 {
     public class BrakeLight : MonoBehaviour
     {

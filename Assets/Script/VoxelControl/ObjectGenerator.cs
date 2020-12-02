@@ -134,14 +134,6 @@ public class ObjectGenerator : MonoBehaviour
     {
         //　ロード画面UIをアクティブにする
         loadUI.SetActive(true);
-        //// <csvファイルを読み込み>
-        //// CSVを保存するリスト
-        //List<string[]> dataList = new List<string[]>();
-        //maxDataCount = dataList.Count;
-        //// ファイル読み込み
-        //dataList = LoadCSV(filepath);
-        //// <csvを基にステージを生成>
-        //StageGenerate(dataList);
         // <立方体を読み込み(デバッグ用)
         //GenerateBox();
         // コルーチン開始
@@ -210,55 +202,53 @@ public class ObjectGenerator : MonoBehaviour
     // ---------------------------------------------------
     // CSVファイルを基にステージを生成する
     // data CSVを読み込んだリスト
-    void StageGenerate(List<string[]> data)
+    void StageGenerate(int[] data)
     {
-       
-        // リストがstring配列なのでint配列に変換(bit演算　LINQ使用)
-        var dataListInt = data.ConvertAll(x => x.Select(int.Parse).ToArray());
+        // 一時保管用
         GameObject bamp;
-        // <ステージを生成>
         // 優しい坂かそれ以外かを選別
-        foreach (var d in dataListInt)
-        {
-            if (d[(int)DataType.OBJECT] / MULTIPLE_NUM > 0)
-                bamp = multipleObjList[d[(int)DataType.OBJECT] / MULTIPLE_NUM - 1].list[d[(int)DataType.OBJECT] % MULTIPLE_NUM];
-            else
-                bamp = objList[d[(int)DataType.OBJECT]];
+        if (data[(int)DataType.OBJECT] / MULTIPLE_NUM > 0)
+            bamp = multipleObjList[data[(int)DataType.OBJECT] / MULTIPLE_NUM - 1].list[data[(int)DataType.OBJECT] % MULTIPLE_NUM];
+        else
+            bamp = objList[data[(int)DataType.OBJECT]];
 
-            // マテリアルナンバーを取得
-            int m = GetMaterialNumberforMutiple(d[(int)DataType.OBJECT]);
-            
-            // 座標を決定(岩盤考慮せず)
-            Vector3 v = new Vector3(d[(int)DataType.POS_X] + (bedlock.position.x + 1), d[(int)DataType.POS_Y] + (bedlock.position.y + 1), d[(int)DataType.POS_Z] + (bedlock.position.z + 1));
+        // マテリアルナンバーを取得
+        int m = GetMaterialNumberforMutiple(data[(int)DataType.OBJECT]);
+
+        // 座標を決定(岩盤考慮せず)
+        Vector3 v = new Vector3(data[(int)DataType.POS_X] + (bedlock.position.x + 1), data[(int)DataType.POS_Y] + (bedlock.position.y + 1), data[(int)DataType.POS_Z] + (bedlock.position.z + 1));
+
+        if (data[(int)DataType.OBJECT] == (int)ObjectType.STAGE)
+        {
+            // スタート位置
+            if (data[(int)DataType.MATERIAL] == 1)
+            {
+                car.transform.position = v;
+            }
+            // ゴール位置
+            else if (data[(int)DataType.MATERIAL] == 2)
+            {
+                goal.transform.position = v;
+            }
+        }
+        else
+        {
             // オブジェクト生成
             GameObject go = Instantiate(bamp, v, Quaternion.identity);
             // マテリアルを適用;
-            go.GetComponentInChildren<Renderer>().material = materialList[m][d[(int)DataType.MATERIAL]];
+            go.GetComponentInChildren<Renderer>().material = materialList[m][data[(int)DataType.MATERIAL]];
             // オブジェクト番号０(四角）以外なら
-            if (d[(int)DataType.OBJECT] != (int)ObjectType.CUBE )
+            if (data[(int)DataType.OBJECT] != (int)ObjectType.CUBE && data[(int)DataType.OBJECT] == (int)ObjectType.STAGE)
             {
                 // 回転を適用
-                go.transform.localEulerAngles = rotationList[d[(int)DataType.ROTATION]];
-            
-            }
-            else if(d[(int)DataType.OBJECT] != (int)ObjectType.STAGE)
-            {
-                if(d[(int)DataType.MATERIAL] == 1)
-                {
-                    
-                }
+                go.transform.localEulerAngles = rotationList[data[(int)DataType.ROTATION]];
+
             }
             // 大本のオブジェクトを親として設定
             go.transform.parent = parentObject.transform;
             // 存在するキューブとして登録
             cubeList.Add(go.GetComponent<Cube>());
         }
-        foreach (var c in cubeList)
-        {
-            // 軽量化
-            CheckVisible(c);
-        }
-        isStageLoaded = true;
     }
     // ---------------------------------------------------
     // 指定スケールの立方体を生成
@@ -274,7 +264,7 @@ public class ObjectGenerator : MonoBehaviour
                 {
                     // オブジェクト生成
                     GameObject instance = (GameObject)Instantiate(objectPrefab,
-                                                                    new Vector3(j, i, k),
+                                                                    new Vector3(j, i+2f, k),
                                                                     Quaternion.identity);
                     //instance.GetComponent<MeshRenderer>().enabled = false;
                     instance.GetComponentInChildren<Renderer>().material = materialList[0][4];
@@ -495,11 +485,10 @@ public class ObjectGenerator : MonoBehaviour
             return 0;
         }
     }
+    // ---------------------------------------------------------------------------
     // ステージロード中画面コルーチン
     IEnumerator LoadStage()
     {
-        // 完全やっつけプログラミング！！！！！
-
         // <csvファイルを読み込み>
         // CSVを保存するリスト
         List<string[]> dataList = new List<string[]>();
@@ -509,57 +498,14 @@ public class ObjectGenerator : MonoBehaviour
 
         // リストがstring配列なのでint配列に変換(bit演算　LINQ使用)
         var dataListInt = dataList.ConvertAll(x => x.Select(int.Parse).ToArray());
-        GameObject bamp;
+       
 
         int i = 0;
-        // <ステージを生成>
-        // 優しい坂かそれ以外かを選別
+        // <ステージ生成>
         foreach (var d in dataListInt)
         {
-            if (d[(int)DataType.OBJECT] / MULTIPLE_NUM > 0)
-                bamp = multipleObjList[d[(int)DataType.OBJECT] / MULTIPLE_NUM - 1].list[d[(int)DataType.OBJECT] % MULTIPLE_NUM];
-            else
-                bamp = objList[d[(int)DataType.OBJECT]];
-
-            // マテリアルナンバーを取得
-            int m = GetMaterialNumberforMutiple(d[(int)DataType.OBJECT]);
-
-            // 座標を決定(岩盤考慮せず)
-            Vector3 v = new Vector3(d[(int)DataType.POS_X] + (bedlock.position.x + 1), d[(int)DataType.POS_Y] + (bedlock.position.y + 1), d[(int)DataType.POS_Z] + (bedlock.position.z + 1));
-
-            if (d[(int)DataType.OBJECT] == (int)ObjectType.STAGE)
-            {
-                // スタート位置
-                if (d[(int)DataType.MATERIAL] == 1)
-                {
-                    car.transform.position = v;
-                }
-                // ゴール位置
-                else if(d[(int)DataType.MATERIAL] == 2)
-                {
-                    goal.transform.position = v;
-                }
-            }
-            else
-            {
-                // オブジェクト生成
-                GameObject go = Instantiate(bamp, v, Quaternion.identity);
-                // マテリアルを適用;
-                go.GetComponentInChildren<Renderer>().material = materialList[m][d[(int)DataType.MATERIAL]];
-                // オブジェクト番号０(四角）以外なら
-                if (d[(int)DataType.OBJECT] != (int)ObjectType.CUBE && d[(int)DataType.OBJECT] == (int)ObjectType.STAGE)
-                {
-                    // 回転を適用
-                    go.transform.localEulerAngles = rotationList[d[(int)DataType.ROTATION]];
-                    
-                }
-                // 大本のオブジェクトを親として設定
-                go.transform.parent = parentObject.transform;
-                // 存在するキューブとして登録
-                cubeList.Add(go.GetComponent<Cube>());
-            }
-           
-
+            // ステージ生成関数
+            StageGenerate(d);
             if (i % 500 == 0)
             {
                 float progressVal = (float)i / (float)dataListInt.Count;
@@ -568,7 +514,6 @@ public class ObjectGenerator : MonoBehaviour
                 yield return null;
             }
             i++;
-            
         }
         isStageLoaded = true;
         i = 0;
@@ -590,5 +535,11 @@ public class ObjectGenerator : MonoBehaviour
         //}
         loadUI.SetActive(false);
         yield break;
+    }
+    // ---------------------------------------------------------------------------
+    // ステージがロードし終わったかどうかのゲッタ
+    public bool GetStageLoad()
+    {
+        return isStageLoaded;
     }
 }

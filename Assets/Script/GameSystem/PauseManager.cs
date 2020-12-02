@@ -21,6 +21,7 @@ public class PauseManager : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1;  // 再開
         // 最初はポーズ画面は非表示
         pausePanel.SetActive(false);
         // ゲーム再開ボタンにResume関数をアタッチ
@@ -36,6 +37,7 @@ public class PauseManager : MonoBehaviour
         {
             // フラグを入れ替える
             pauseFlag = !pauseFlag;
+
             if(pauseFlag)
             {
                 OnPause();
@@ -45,12 +47,15 @@ public class PauseManager : MonoBehaviour
                 Resume();
                 
             }
+
+            
         }
     }
     // タイトルに戻る
     private void ReturnTitle()
     {
         SceneManager.LoadScene("TitleScene");
+        
     }
     // ゲームを再開
     private void Resume()
@@ -64,12 +69,10 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 0;
         pausePanel.SetActive(true);
     }
-    // ポーズかどうかを取得
+    // ポーズかどうかを取得、設定
     public bool Pause
     {
-        get
-        {
-            return pauseFlag;
-        }
+        get { return pauseFlag; }
+        set { pauseFlag = value; }
     }
 }
