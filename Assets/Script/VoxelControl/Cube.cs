@@ -12,17 +12,19 @@ public class Cube : MonoBehaviour
     ObjectGenerator DirectorObject;
     // 破片の当たり判定
     BoxCollider bCol;
-    // 物理
-    Rigidbody rigid;
     // メッシュレンダラー
     MeshRenderer mesh;
+    // レンダラー
+    Renderer renderer;
     // ジョイント情報
     FixedJoint joint;
     // 破片となった時の大きさ
     const float FragmentScale = 80f;
     // 削除命令が出てから消えるまでの時間
     const float DestroyTime = 5.0f;
-
+    // 置き換え先のRigid付きPrefab
+    [SerializeField]
+    GameObject NewCube;
     // ---------------------------------------------------
     // このオブジェクトが有効になった時
     private void OnEnable()
@@ -30,8 +32,8 @@ public class Cube : MonoBehaviour
         // 各コンポーネント取得
         DirectorObject = GameObject.Find("Director").GetComponent<ObjectGenerator>();
         bCol  = this.GetComponent<BoxCollider>();
-        rigid = this.GetComponent<Rigidbody>();
-        mesh  = this.GetComponent<MeshRenderer>();
+        mesh = this.GetComponent<MeshRenderer>();
+        renderer  = this.GetComponent<Renderer>();
         joint = this.GetComponent<FixedJoint>();
     }
     // ---------------------------------------------------
@@ -54,37 +56,31 @@ public class Cube : MonoBehaviour
     // radius 爆発半径
     public void ExplodeMe(float power, Vector3 center, float radius)
     {
-        // 先に自身を崩れさせる
-        CollapseMe();
-        // 爆発処理をする
-        this.rigid.AddExplosionForce(power, center, radius);
+        
+        // 親がいる場合は崩れる処理
+        if (this.transform.parent != null)
+        {
+            //// 親の繋がりを絶つ
+            //this.transform.parent = null;
+            //// 詰まらないように破片の大きさを80%にする
+            //this.transform.localScale = new Vector3(FragmentScale, FragmentScale, FragmentScale);
+            //// 可視化する
+            //mesh.enabled = true;
+            //// 削除申請を出しておく（消されるのは数秒後
+            //Destroy(this.gameObject, DestroyTime);
+            
+            // 代わりとなるオブジェクトを生成
+            GameObject go = Instantiate(NewCube,this.transform.position, Quaternion.identity);
+            // 爆発処理をする
+            go.GetComponent<Rigidbody>().AddExplosionForce(power, center, radius);
+            go.GetComponent<Renderer>().material = renderer.material;
+            Destroy(this.gameObject);
+        }
+        
         // 軽量化処理
         // 接しているオブジェクトを取得
            
     }
-    // ------------------------------------------------------
-    // 自身を崩れさせる関数
-    private void CollapseMe()
-    {
-        // 親から独立させて物理挙動をONにする
-        // 親がいる場合は崩れる処理
-        if (this.transform.parent != null)
-        {
-            // 親の繋がりを絶つ
-            this.transform.parent = null;
-            // 詰まらないように破片の大きさを80%にする
-            this.transform.localScale = new Vector3(FragmentScale, FragmentScale, FragmentScale);
-            // 物理挙動をONにする
-            rigid.isKinematic = false;
-            // 可視化する
-            mesh.enabled = true;
-            // 削除申請を出しておく（消されるのは数秒後
-            Destroy(this.gameObject, DestroyTime);
-            // ジョイントを絶つ
-            Destroy(joint);
-        }
-    }
-
     
     // 可視状態かどうかを取得
     public bool GetVisable()
