@@ -31,10 +31,8 @@ public class GrenadeScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Object") || collision.gameObject.CompareTag("Block") || collision.gameObject.CompareTag("Fragment"))
         {
             GameObject root = null;
-            if(collision.transform.parent)
-            {
-                root = collision.transform.parent.gameObject;
-            }
+            // collisionは親
+            root = collision.transform.gameObject;
             
             // ディレクターから範囲内のオブジェクトを取得する
             Cube[] cubes = generator.GetCubeInRange(3.0f, this.transform.position);
@@ -44,11 +42,11 @@ public class GrenadeScript : MonoBehaviour
             {
                 c.ExplodeMe(1000f, this.transform.position, 15f);
             }
-            //if(collision.gameObject.CompareTag("Block") && root)
-            //{
-            //    // オブジェクトの分離処理
-            //    spritter.CheckSplit(root);
-            //}
+            if(cubes.Length > 0)
+            {
+                // オブジェクトの分離処理
+                spritter.CheckSplit(root);
+            }
             Destroy(this.gameObject);
         }
     }

@@ -34,36 +34,38 @@ public class paintButtonScript : MonoBehaviour
     void Start()
     {
         ChangeShapeDropdown(materialDropdown);
+        operation.text = "左クリック：置く\nShift+左クリック：消す(原点のは無理)\nドロップダウンで置くブロックとマテリアル変更";
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        switch (mode)
+        // パネル出てない、UIに触れてない　でupdate
+        if(!bedrock.panel.activeSelf && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
-            case MODE.FORM:
-                if(!bedrock.panel.activeSelf)
+            switch (mode)
+            {
+                case MODE.FORM:
                     form.Form();
-                operation.text = "左クリック：置く\nShift+左クリック：消す(原点のは無理)\nドロップダウンで置くブロックとマテリアル変更";
-                break;
-            case MODE.PAINT:
-                if (!bedrock.panel.activeSelf)
+                    break;
+                case MODE.PAINT:
                     paint.Paint();
-                operation.text = "左クリック：色変え\nドロップダウンで選択したブロックの色を変更可能\nドロップダウンでマテリアル変更";
-                break;
-            case MODE.STAMP:
-                if (!bedrock.panel.activeSelf)
+                    break;
+                case MODE.STAMP:
                     stamp.Stamp();
-                operation.text = "左クリック：置く　右クリック：回転\nブロックが回転しないのは仕様\nドロップダウンで置くスタンプ変更\nBoxesData/Stamps内を参照する";
-                break;
-            case MODE.BEDROCKSIZE:
-                if (!bedrock.panel.activeSelf)
+                    break;
+                case MODE.BEDROCKSIZE:
                     bedrock.ChangeSize();
-                operation.text = "左下らへんのInputFieldで大きさ変更\nTabキーでInputField切替\n再度サイズ変更ボタンを押すと終了";
-                break;
+                    break;
+            }
         }
     }
 
+    /// <summary>
+    /// 左上のボタンを押したとき　モード変える
+    /// サイズ変更モードの時はボタン押してもなんも起こらない
+    /// </summary>
     public void ClickPaintButton()
     {
         switch(mode)
@@ -71,6 +73,7 @@ public class paintButtonScript : MonoBehaviour
             case MODE.FORM:
                 text.text = "いろぬり";
                 mode = MODE.PAINT;
+                operation.text = "左クリック：色変え\nドロップダウンで選択したブロックの色を変更可能\nドロップダウンでマテリアル変更";
                 break;
             case MODE.PAINT:
                 text.text = "すたんぷ";
@@ -78,6 +81,7 @@ public class paintButtonScript : MonoBehaviour
                 shapeDropdown.gameObject.SetActive(false);
                 stampDropdown.gameObject.SetActive(true);
                 mode = MODE.STAMP;
+                operation.text = "左クリック：置く　右クリック：回転\nブロックが回転しないのは仕様\nドロップダウンで置くスタンプ変更\nBoxesData/Stamps内を参照する";
                 break;
             case MODE.STAMP:
                 text.text = "はいち";
@@ -85,6 +89,7 @@ public class paintButtonScript : MonoBehaviour
                 shapeDropdown.gameObject.SetActive(true);
                 stampDropdown.gameObject.SetActive(false);
                 mode = MODE.FORM;
+                operation.text = "左クリック：置く\nShift+左クリック：消す(原点のは無理)\nドロップダウンで置くブロックとマテリアル変更";
                 break;
             default:
                 // さいずかえモードの時ここ　なにもおこりません
@@ -92,6 +97,11 @@ public class paintButtonScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ドロップダウン用　置く形の方のドロップダウンを変えた時にマテリアルのドロップダウンも変更する
+    /// 引数いらないのは秘密
+    /// </summary>
+    /// <param name="change">勝手に来る</param>
     public void ChangeShapeDropdown(Dropdown change)
     {
         // 引数で押されたドロップダウンを持って来れる　あとはvalueで数字取得したり
@@ -100,18 +110,28 @@ public class paintButtonScript : MonoBehaviour
         materialDropdown.value = 0;
     }
 
+    /// <summary>
+    /// サイズ変更モードに移行
+    /// </summary>
     public void SetPrevMode()
     {
+        // サイズ変更モードに移行　いろいろ非表示にする
         prevMode = mode;
         mode = MODE.BEDROCKSIZE;
         text.text = "さいずかえ";
+        operation.text = "左下らへんのInputFieldで大きさ変更\nTabキーでInputField切替\n再度サイズ変更ボタンを押すと終了";
+
         materialDropdown.gameObject.SetActive(false);
         shapeDropdown.gameObject.SetActive(false);
         stampDropdown.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// サイズ変更モードから戻る
+    /// </summary>
     public void EndBedrockSizeMode()
     {
+        // サイズ変更モード→元のモードに戻る　元のモードのUI表示状況は別関数で設定
         mode = --prevMode;
         if ((int)mode == -1)
             mode = MODE.STAMP;

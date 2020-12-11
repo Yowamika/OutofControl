@@ -14,7 +14,7 @@ public class CubeSprit : MonoBehaviour
     // RootオブジェクトのPrefab
     [SerializeField]
     GameObject rootObject;
-    private void Awake()
+    private void Start()
     {
         // オブジェクト生成スクリプトを取得
         generator = this.GetComponent<ObjectGenerator>();
@@ -25,6 +25,7 @@ public class CubeSprit : MonoBehaviour
     public void CheckSplit(GameObject root)
     {
         List<GameObject> children = new List<GameObject>();
+        
         // 親分離処理
         GenerateRootObject(root);
     }
@@ -53,6 +54,7 @@ public class CubeSprit : MonoBehaviour
         List<Cube> cubes = new List<Cube>();
         for (int i = 0; i< save.Count;i++)
         {
+            // 周囲にあるオブジェクトを取得(レイキャストのほうが確実)
             cubes.AddRange(generator.GirthCheck(root, save[i].GetComponent<Cube>()));
             for (int j = 0; j < cubes.Count; j++)
             {
@@ -60,13 +62,13 @@ public class CubeSprit : MonoBehaviour
                 if (!save.Contains(cubes[j]))
                 {
                     cubes[j].transform.parent = newRoot.transform;
-                    cubes[j].GetComponent<Rigidbody>().isKinematic = false;
                     save.Add(cubes[j]);
                 }
                 else
                     cubes.Remove(cubes[j]);
             }
         }
+       
         // 終了処理
         if (cubes.Count == 0)
             return save.ToArray();

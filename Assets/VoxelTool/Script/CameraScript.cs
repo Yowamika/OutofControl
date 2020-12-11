@@ -3,6 +3,7 @@
 /// <summary>
 /// GameビューにてSceneビューのようなカメラの動きをマウス操作によって実現する
 /// https://gist.github.com/EsProgram/0fd35669c28fd13594c8
+/// 改変：浅野
 /// </summary>
 [RequireComponent(typeof(Camera))]
 public class CameraScript : MonoBehaviour
@@ -17,7 +18,8 @@ public class CameraScript : MonoBehaviour
     private float rotateSpeed = 0.3f;
 
     private Vector3 preMousePos;
-    public Transform target;
+    [SerializeField]
+    private Transform target = null;
 
     [SerializeField]
     private KeyCode upKey = KeyCode.W;

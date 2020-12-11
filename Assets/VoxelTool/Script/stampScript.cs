@@ -10,9 +10,10 @@ public class stampScript : MonoBehaviour
     public cubeHolder holder;
     public UnityEngine.UI.Dropdown stampDropdown;
 
-
-    // (こっちいらなくね…？)
-    public List<List<GameObject>> stampList;
+    // スタンプの名前
+    public List<string> stampNameList;
+    // 結局使わんかったじゃんお前…
+    public List<List<GameObject>> stampPosList;
     // スタンプのマテリアル番号のリスト
     public List<List<int>> matNumList;
     // 作ったprefabのリスト
@@ -22,16 +23,21 @@ public class stampScript : MonoBehaviour
     // 右クリックの回転角
     private int rotAngle = 0;
 
+    // 一個前に選んでたQuad
+    private GameObject prevQuad = null;
+    // 配置したいスタンプが配置済スタンプと重なってないか　重なってたらtrue
+    private bool fIsPiled = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        stampList = new List<List<GameObject>>();
+        stampPosList = new List<List<GameObject>>();
         matNumList = new List<List<int>>();
         prefabList = new List<GameObject>();
         prefabObj = null;
 
         stampDropdown.ClearOptions();
-        List<string> list = new List<string>();
+        stampNameList = new List<string>();
 
         // 読み込みたいフォルダのアドレスを用意
         string path = Application.dataPath + "/VoxelTool/BoxesData/Stamps";
@@ -43,129 +49,135 @@ public class stampScript : MonoBehaviour
 
         for (int i = 0; i < files.Length; i++) 
         {
-            stampList.Add(new List<GameObject>());
+            stampPosList.Add(new List<GameObject>());
             matNumList.Add(new List<int>());
-            holder.LoadCSV(files[i], stampList[i], matNumList[i]);
+            holder.LoadCSV(files[i], stampPosList[i], matNumList[i]);
 
             GameObject obj = new GameObject();
-            for (int j = 0; j < stampList[i].Count; j++)
+            for (int j = 0; j < stampPosList[i].Count; j++)
             {
-                stampList[i][j].transform.parent = obj.transform;
+                stampPosList[i][j].transform.parent = obj.transform;
             }
-            // プレファブ作成
+            // prefab作成
             // GetFileNameWithoutExtention() 拡張子とかフォルダとかを抜きにしたファイル名だけくれるやつ(string)
             string name = System.IO.Path.GetFileNameWithoutExtension(files[i]);
             var prefab = PrefabUtility.SaveAsPrefabAsset(obj, "Assets/VoxelTool/Stamp/" + name + ".prefab");
-            // 子オブジェクト含めて全部のレイヤーを２(レイキャスト対象外)に変更
-            prefab.SetLayer(2);
             // シーンから削除  
-            // ※DestroyImmediate(object)　Destroyの即座に消すバージョンみたいなやつ　非推奨らしいからやめとく
             Destroy(obj);
+            // 作ったprefabを保存
             AssetDatabase.SaveAssets();
+            // listに追加
             prefabList.Add(prefab);
-            list.Add(name);
+            stampNameList.Add(name);
         }
 
-        stampDropdown.AddOptions(list);
+        // dropdownに名前を追加
+        stampDropdown.AddOptions(stampNameList);
         stampDropdown.value = 0;
     }
 
-    // -----------------------------------------------
-    // 状態遷移から呼び出す用
+    /// <summary>
+    /// 状態遷移から呼び出す用
+    /// スタンプモード
+    /// </summary>
     public void Stamp()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100.0f))
         {
+            // スタンプ生成
             if(!prefabObj)
             {
                 prefabObj = Instantiate(prefabList[stampDropdown.value]);
+                // 子オブジェクト含めて全部のレイヤーを２(レイキャスト対象外)に変更
+                prefabObj.SetLayer(2);
             }
-            // 子が回転しないように逆回転をかける
-            if (hit.transform.name == "QuadFront")
+
+            
+            // 右クリックで回転
+            if (Input.GetMouseButtonDown(1))
             {
-                prefabObj.transform.position = hit.transform.parent.position + new Vector3(0, 0, -1);
-                prefabObj.transform.localEulerAngles = new Vector3(270 + rotAngle, 270, 90);
-                foreach (Transform obj in prefabObj.transform)
+                rotAngle += 90;
+                if (rotAngle >= 360)
                 {
-                    obj.localEulerAngles = new Vector3(-270, rotAngle, 0);
-                }
-            }
-            else if (hit.transform.name == "QuadBack")
-            {
-                prefabObj.transform.position = hit.transform.parent.position + new Vector3(0, 0, 1);
-                prefabObj.transform.localEulerAngles = new Vector3(90 - rotAngle, 270, 270);
-                foreach (Transform obj in prefabObj.transform)
-                {
-                    obj.localEulerAngles = new Vector3(-90, rotAngle, 0);
-                }
-            }
-            else if (hit.transform.name == "QuadLeft")
-            {
-                prefabObj.transform.position = hit.transform.parent.position + new Vector3(-1, 0, 0);
-                prefabObj.transform.localEulerAngles = new Vector3(rotAngle, 0, 90);
-                foreach(Transform obj in prefabObj.transform)
-                {
-                    obj.localEulerAngles = new Vector3(0, rotAngle, -90);
-                }
-            }
-            else if (hit.transform.name == "QuadRight")
-            {
-                prefabObj.transform.position = hit.transform.parent.position + new Vector3(1, 0, 0);
-                prefabObj.transform.localEulerAngles = new Vector3(-rotAngle, 0, 270);
-                foreach (Transform obj in prefabObj.transform)
-                {
-                    obj.localEulerAngles = new Vector3(0, rotAngle, -270);
-                }
-            }
-            else if (hit.transform.name == "QuadTop")
-            {
-                // メモ：岩盤対策する　ポジションだけでいいはず
-                if (hit.transform.parent.name == "bedrock")
-                {
-                    prefabObj.transform.position = new Vector3(Mathf.Ceil(hit.point.x - 0.5f), Mathf.Ceil(hit.point.y), Mathf.Ceil(hit.point.z - 0.5f));
-                }
-                else
-                    prefabObj.transform.position = hit.transform.parent.position + new Vector3(0, 1, 0);
-                prefabObj.transform.localEulerAngles = new Vector3(0, rotAngle, 0);
-                foreach (Transform obj in prefabObj.transform)
-                {
-                    obj.localEulerAngles = new Vector3(0, -rotAngle, 0);
-                }
-            }
-            else if (hit.transform.name == "QuadBottom")
-            {
-                prefabObj.transform.position = hit.transform.parent.position + new Vector3(0, -1, 0);
-                prefabObj.transform.localEulerAngles = new Vector3(0, -rotAngle, 180);
-                foreach (Transform obj in prefabObj.transform)
-                {
-                    obj.localEulerAngles = new Vector3(0, -rotAngle, 180);
+                    // 360°超えたら０に戻す
+                    rotAngle -= 360;
                 }
             }
 
+            // 何回もスタンプの接触判定してたらすごい重くなる気がしたので必要最低限のUpdate
+            if (!prevQuad || prevQuad != hit.transform.gameObject || hit.transform.parent.name == "bedrock" || Input.GetMouseButtonDown(1))
+            {
+                prevQuad = hit.transform.gameObject;
+
+                // 祝☆簡略化
+                Vector3 pos = new Vector3();
+                if (hit.transform.parent.name == "bedrock")
+                {
+                    pos = new Vector3(Mathf.Ceil(hit.point.x - 0.5f), Mathf.Ceil(hit.point.y), Mathf.Ceil(hit.point.z - 0.5f));
+                }
+                else
+                {
+                    pos = hit.transform.parent.position + hit.transform.localPosition * 2;
+                }
+                // いい感じのポジションを手に入れる　jointScriptと一緒
+                prefabObj.transform.position = pos;
+                // prefabの上をhitしたQuadの上と一緒にする
+                prefabObj.transform.up = -hit.transform.forward;
+                // rotangle分回転
+                prefabObj.transform.Rotate(Vector3.up, rotAngle);
+                Quaternion rot = prefabObj.transform.rotation;
+                // 子オブジェクトに逆回転をかける
+                foreach (Transform obj in prefabObj.transform)
+                {
+                    obj.localRotation = Quaternion.Inverse(rot);
+                }
+
+
+                //// 重なり判定
+                fIsPiled = holder.CompareStampList(prefabObj);
+                if (fIsPiled)
+                {
+                    // さっきまで赤色だった可能性があるので白にする
+                    var childConponents = prefabObj.GetComponentsInChildren<Renderer>();
+
+                    foreach (var childRenderer in childConponents)
+                    {
+                        childRenderer.GetComponentInChildren<Renderer>().material.color = Color.red;
+                    }
+                }
+                else
+                {
+                    // 配置済スタンプと重なってるので置けない　赤色にする
+                    var childConponents = prefabObj.GetComponentsInChildren<Renderer>();
+
+                    foreach (var childRenderer in childConponents)
+                    {
+                        childRenderer.GetComponentInChildren<Renderer>().material.color = Color.white;
+                    }
+                }
+
+                //Debug.Log(prefabObj.transform.rotation + ":" + Quaternion.AngleAxis(rotAngle, -hit.transform.forward));
+                //Debug.Log(prefabObj.transform.rotation + ":" + hit.transform.localRotation);
+            }
+
             // 左クリックでスタンプ置く
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0) && !fIsPiled)
             {
                 // prefabObjのレイヤーを変更(レイヤー番号は変える可能性ある　2以外)
                 prefabObj.SetLayer(0);
-                int n = 0;
                 foreach (Transform obj in prefabObj.transform)
                 {
                     // prefabObjの子オブジェクトとholderで重なってるやつがないか調べる
                     // 重なってたらholderの方を消す
                     holder.CompareCubeList(obj.gameObject);
-                    holder.AddCubeList(obj.gameObject, matNumList[stampDropdown.value][n]);
-                    //// holderにprefabObjの子オブジェクトを入れる
-                    //holder.cubeList.Add(obj.gameObject);
-                    //// holderのmatの方に子オブジェクトを入れる
-                    //holder.cubeMatList.Add(matNumList[SelectStumpNum][n]);
-                    n++;
                 }
-                // 親子関係を解除
-                prefabObj.transform.DetachChildren();
+                // 名前を変更　というか(Instance)を消す
+                prefabObj.name = stampDropdown.captionText.text;
+                // 配置中のスタンプリストに追加
+                holder.stampList.Add(prefabObj);
                 // ポインタを消す
-                Destroy(prefabObj);
                 prefabObj = null;
             }
             
@@ -174,18 +186,9 @@ public class stampScript : MonoBehaviour
         {
             Destroy(prefabObj);
             prefabObj = null;
+            prevQuad = null;
         }
 
-        // 右クリックで回転
-        if(Input.GetMouseButtonDown(1))
-        {
-            rotAngle += 90;
-            if (rotAngle >= 360) 
-            {
-                // 360°超えたら０に戻す
-                rotAngle -= 360;
-            }
-        }
     }
 
     // -----------------------------------------------

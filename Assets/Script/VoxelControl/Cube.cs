@@ -71,9 +71,11 @@ public class Cube : MonoBehaviour
             
             // 代わりとなるオブジェクトを生成
             GameObject go = Instantiate(NewCube,this.transform.position, Quaternion.identity);
+            go.transform.localScale = new Vector3(FragmentScale, FragmentScale, FragmentScale);
             // 爆発処理をする
             go.GetComponent<Rigidbody>().AddExplosionForce(power, center, radius);
             go.GetComponent<Renderer>().material = renderer.material;
+            Destroy(go, DestroyTime);
             Destroy(this.gameObject);
         }
         

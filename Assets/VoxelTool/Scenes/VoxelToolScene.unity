@@ -2028,6 +2028,7 @@ MonoBehaviour:
   cubeList:
   - {fileID: 2096448768}
   cubeMatList: 
+  stampList: []
   objDropdown: {fileID: 1219717494}
   matDropdown: {fileID: 2012723231}
   objList:
@@ -2044,6 +2045,7 @@ MonoBehaviour:
   - Slope
   - StageObj
   - GentleSlope
+  stampObject: {fileID: 569364415}
   rotationList: []
 --- !u!4 &333182079
 Transform:
@@ -2690,6 +2692,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holder: {fileID: 333182078}
   stampDropdown: {fileID: 191756613}
+  stampNameList: []
   prefabList: []
 --- !u!4 &569364416
 Transform:
@@ -5100,6 +5103,17 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 1219717494}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Dropdown, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 822984672}
+        m_MethodName: ChangeFade
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -7658,12 +7672,17 @@ PrefabInstance:
     - target: {fileID: 7135174395891897762, guid: eda75489b1bba344494aff69360b376e,
         type: 3}
       propertyPath: m_Name
-      value: cube
+      value: cubeObj
       objectReference: {fileID: 0}
     - target: {fileID: 7135174395891897762, guid: eda75489b1bba344494aff69360b376e,
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135174395891897762, guid: eda75489b1bba344494aff69360b376e,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7135174395891897763, guid: eda75489b1bba344494aff69360b376e,
         type: 3}

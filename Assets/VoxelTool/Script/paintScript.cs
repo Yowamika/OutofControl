@@ -20,6 +20,10 @@ public class paintScript : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 状態遷移用
+    /// ペイントモード
+    /// </summary>
     public void Paint()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -28,22 +32,36 @@ public class paintScript : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100.0f))
         {
             bool b = IsContainsObj(hit.transform.parent.gameObject);
-            if (prevCube && prevCube != hit.transform.parent.gameObject && b)
+            if (hit.transform.root != hit.transform.parent)
             {
+                // 選んだのがスタンプだった場合
+                // prevをなかったことにする
+                if(prevCube)
+                {
+                    prevCube.GetComponentInChildren<Renderer>().material = prevMaterial;
+                    prevCube = null;
+
+                }
+            }
+            else if (prevCube && prevCube != hit.transform.parent.gameObject && b)
+            {
+                // 既にprevが存在してる場合
+                // prevの更新
                 prevCube.GetComponentInChildren<Renderer>().material = prevMaterial;
                 prevCube = hit.transform.parent.gameObject;
                 prevMaterial = new Material(prevCube.GetComponentInChildren<Renderer>().material);
             }
-            else if (!prevCube)
+            else if (!prevCube && b)
             {
-                if (b)
-                {
-                    prevCube = hit.transform.parent.gameObject;
-                    prevMaterial = new Material(prevCube.GetComponentInChildren<Renderer>().material);
-                }
+                // prevなかった＆塗れるオブジェクト選んでた場合
+                // prev初期化
+                prevCube = hit.transform.parent.gameObject;
+                prevMaterial = new Material(prevCube.GetComponentInChildren<Renderer>().material);
             }
             else if (prevCube && !b)
             {
+                // prevとは別の名前のオブジェクトを選んでいた場合
+                // prevをなかったことにする
                 prevCube.GetComponentInChildren<Renderer>().material = prevMaterial;
                 prevCube = null;
             }
@@ -51,9 +69,14 @@ public class paintScript : MonoBehaviour
             //Debug.Log(prevMaterial.name);
             if(prevCube)
             {
+                // prevCubeをドロップダウン選択中のマテリアルで塗る
+                // [オブジェクト番号][マテリアル番号]
                 prevCube.GetComponentInChildren<Renderer>().material = holder.materialList[holder.GetMaterialMultipleNum(holder.GetObjectNum(prevCube))][holder.matDropdown.value];
                 if (Input.GetMouseButtonUp(0))
                 {
+                    // prevのマテリアルを確定させる
+                    // cubeMatListを更新
+                    // prevをnullにする
                     int lNum = holder.cubeList.IndexOf(prevCube);
                     holder.cubeMatList[lNum] = holder.matDropdown.value;
                     Destroy(prevMaterial);
@@ -63,16 +86,28 @@ public class paintScript : MonoBehaviour
         }
         else
         {
+            // 何とも当たってない場合
             if(prevCube)
+            {
+                // prevをなかったことにする
                 prevCube.GetComponentInChildren<Renderer>().material = prevMaterial;
+            }
             prevCube = null;
         }
     }
 
+                                                                  
+    /// <summary>
+    /// 今選択してるやつ(引数のGameObject)が今ドロップダウンで選択してるオブジェクトと合ってるか
+    /// 複数オブジェクト対応
+    /// </summary>
+    /// <param name="obj">Rayのやつ</param>
+    /// <returns></returns>
     bool IsContainsObj(GameObject obj)
     {
         if(holder.objList[holder.objDropdown.value])
         {
+            // objListの選択してるやつがobjの名前だったらtrue
             if(obj.name.Contains(holder.objList[holder.objDropdown.value].name))
             {
                 return true;
@@ -84,6 +119,7 @@ public class paintScript : MonoBehaviour
             List<GameObject> list = holder.GetMultipleMaterialList(holder.objDropdown.value);
             for (int i = 0; i < list.Count; i++) 
             {
+                // 取得した複数オブジェクトリストの中にobjの名前があったらtrue
                 if (obj.name.Contains(list[i].name))
                 {
                     return true;

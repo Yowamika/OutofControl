@@ -20,37 +20,41 @@ public class BedrockScript : MonoBehaviour
     // メモ：パネルはImageかGameObjectで取得できる
     public GameObject panel;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private bool flag=false;
 
-    // Update is called once per frame
     void Update()
     {
-
+        if(flag)
+        {
+            holder.ResetCubeList();
+            if (sizeButton.gameObject.activeSelf)
+            {
+                sizeButton.gameObject.SetActive(false);
+                bedrock.SetActive(false);
+                GameObject c = Instantiate(holder.objList[0], Vector3.zero, Quaternion.identity);
+                holder.AddCubeList(c, 0);
+            }
+            else
+            {
+                sizeButton.gameObject.SetActive(true);
+                bedrock.SetActive(true);
+            }
+            flag = false;
+        }
     }
 
-    // -----------------------------------------------
-    // 状態遷移
+
+    /// <summary>
+    /// 状態遷移用
+    /// 岩盤サイズ変更モード
+    /// </summary>
     public void ChangeSize()
     {
-        //Vector3 scale = bedrock.transform.localScale;
-        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //RaycastHit hit;
-
-        //if (Physics.Raycast(ray, out hit, 100.0f,1<<9))
-        //{
-
-        //    // メモ：切り上げかMath.Roundで伸ばす値をとる　０にはなりたくない？
-        //    // どっかに一個前のlocalscaleを取っておく　１伸びたら0.5位置をずらす　
-        //    //Debug.Log(new Vector3Int((int)hit.point.x, (int)hit.point.y, (int)hit.point.z));
-        //}
+        // tabキーで選んでるinputFieldを変更したりモード終了したり
         if (Input.GetKeyDown(KeyCode.Tab))
         {
+            //                                                                  今選択してるUIが取れる↓
             GameObject selected = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
-            //Debug.Log(selected.name);
             if(selected)
             {
                 if (selected == fieldX.gameObject)
@@ -65,48 +69,58 @@ public class BedrockScript : MonoBehaviour
         }
     }
 
-    // -----------------------------------------------
-    // 確認パネル表示
+    /// <summary>
+    /// 確認パネル表示
+    /// </summary>
     public void OnClickButtonBedrock()
     {
         panel.SetActive(true);
     }
 
-    // -----------------------------------------------
-    // 確認パネルのはい押したやつ
-    // 原点のブロックを変更　フィールドリセット
+    /// <summary>
+    /// 確認パネルのはい
+    /// 原点のブロックを変更　フィールドリセット
+    /// </summary>
     public void OnClickCheckButtonYesInPanel()
     {
-        holder.ResetCubeList();
-        if (sizeButton.gameObject.activeSelf)
-        {
-            sizeButton.gameObject.SetActive(false);
-            bedrock.SetActive(false);
-            GameObject c = Instantiate(holder.objList[0], Vector3.zero, Quaternion.identity);
-            holder.AddCubeList(c, 0);
-        }
-        else
-        {
-            sizeButton.gameObject.SetActive(true);
-            bedrock.SetActive(true);
-        }
         panel.SetActive(false);
+        flag = true;
+        //holder.ResetCubeList();
+        //if (sizeButton.gameObject.activeSelf)
+        //{
+        //    sizeButton.gameObject.SetActive(false);
+        //    bedrock.SetActive(false);
+        //    GameObject c = Instantiate(holder.objList[0], Vector3.zero, Quaternion.identity);
+        //    holder.AddCubeList(c, 0);
+        //}
+        //else
+        //{
+        //    sizeButton.gameObject.SetActive(true);
+        //    bedrock.SetActive(true);
+        //}
     }
 
-    // -----------------------------------------------
-    // 確認パネルいいえ
+    /// <summary>
+    /// 確認パネルのいいえ
+    /// パネル消えるくらい
+    /// </summary>
     public void OnClickCheckButtonNoInPanel()
     {
         panel.SetActive(false);
     }
 
-    // -----------------------------------------------
-    // 岩盤サイズ変更モードに移行
+
+
+    /// <summary>
+    /// 岩盤サイズ変更モードに移行
+    /// </summary>
     public void OnClickButtonChangeSize()
     {
         fModeChangeSize = !fModeChangeSize;
         if(fModeChangeSize)
         {
+            // モード変更、inputField表示、text更新、Xを最初に選ぶようにしておく
+            // text更新は一応
             state.SetPrevMode();
             fieldX.gameObject.SetActive(true);
             fieldZ.gameObject.SetActive(true);
@@ -120,6 +134,7 @@ public class BedrockScript : MonoBehaviour
         }
         else
         {
+            // モード戻す、inputfield非表示
             state.EndBedrockSizeMode();
             fieldX.gameObject.SetActive(false);
             fieldZ.gameObject.SetActive(false);
@@ -131,16 +146,33 @@ public class BedrockScript : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// inputfieldXの数字変更されたとき
+    /// </summary>
     public void ValueChangeX()
     {
         int siz = int.Parse(fieldX.text);
+        if(siz <= 0)
+        {
+            siz = 1;
+        }
         bedrock.transform.localScale = new Vector3(siz, 1, bedrock.transform.localScale.z);
         bedrock.transform.position = new Vector3((float)(siz-1) / 2, 0, bedrock.transform.position.z);
     }
 
+
+
+    /// <summary>
+    /// inputfieldXの数字変更されたとき
+    /// </summary>
     public void ValueChangeZ()
     {
         int siz = int.Parse(fieldZ.text);
+        if (siz <= 0)
+        {
+            siz = 1;
+        }
         bedrock.transform.localScale = new Vector3(bedrock.transform.localScale.x, 1, siz);
         bedrock.transform.position = new Vector3(bedrock.transform.position.x, 0, (float)(siz - 1) / 2);
     }
