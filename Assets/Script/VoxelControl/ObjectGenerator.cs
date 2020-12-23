@@ -111,6 +111,8 @@ public class ObjectGenerator : MonoBehaviour
     //　読み込み率を表示するスライダー
     [SerializeField]
     Slider slider;
+    // ジェネレートカウント用
+    int gene_count = 0;
 
     // ---------------------------------------------------
     // 初期化処理
@@ -235,20 +237,21 @@ public class ObjectGenerator : MonoBehaviour
         {
             // オブジェクト生成
             GameObject go = Instantiate(bamp, v, Quaternion.identity);
-            // マテリアルを適用;
+            go.name = gene_count.ToString();
+            // マテリアルを適用
             go.GetComponentInChildren<Renderer>().material = materialList[m][data[(int)DataType.MATERIAL]];
             // オブジェクト番号０(四角）以外なら
             if (data[(int)DataType.OBJECT] != (int)ObjectType.CUBE && data[(int)DataType.OBJECT] == (int)ObjectType.STAGE)
             {
                 // 回転を適用
                 go.transform.localEulerAngles = rotationList[data[(int)DataType.ROTATION]];
-
             }
             // 大本のオブジェクトを親として設定
             go.transform.parent = parentObject.transform;
             // 存在するキューブとして登録
             cubeList.Add(go.GetComponent<Cube>());
         }
+        gene_count++;
     }
     // ---------------------------------------------------
     // 指定スケールの立方体を生成

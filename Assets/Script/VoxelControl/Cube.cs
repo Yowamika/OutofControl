@@ -71,10 +71,14 @@ public class Cube : MonoBehaviour
             
             // 代わりとなるオブジェクトを生成
             GameObject go = Instantiate(NewCube,this.transform.position, Quaternion.identity);
+            // レイキャストを無視するレイヤー
             go.transform.localScale = new Vector3(FragmentScale, FragmentScale, FragmentScale);
             // 爆発処理をする
             go.GetComponent<Rigidbody>().AddExplosionForce(power, center, radius);
             go.GetComponent<Renderer>().material = renderer.material;
+            this.transform.parent = null;
+            // レイを無視するレイヤーに変更
+            this.gameObject.layer = 9;
             Destroy(go, DestroyTime);
             Destroy(this.gameObject);
         }
