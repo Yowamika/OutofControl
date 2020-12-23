@@ -14,8 +14,6 @@ public class CubeSprit : MonoBehaviour
     // RootオブジェクトのPrefab
     [SerializeField]
     GameObject rootObject;
-
-    int LoopCount = 0;
     private void Start()
     {
         // オブジェクト生成スクリプトを取得
@@ -66,18 +64,25 @@ public class CubeSprit : MonoBehaviour
         cubes.AddRange(GirthCheckToRay(cube));
         for (int i = 0; i < cubes.Count; i++)
         {
-            Debug.Log(cubes[i].name);
-            // リスト内検索
-            if (!save.Contains(cubes[i]))
+            if(cubes[i].tag == "Object")
             {
-                // 親を更新する
-                cubes[i].transform.parent = newRoot.transform;
-                // 保存リストに追加
-                save.Add(cubes[i]);
-                // 再帰
-                save = ObjectSplit(cubes[i], save, newRoot);
-                
+                newRoot.GetComponent<Rigidbody>().isKinematic = true;
             }
+            else
+            {
+                // リスト内検索
+                if (!save.Contains(cubes[i]))
+                {
+                    // 親を更新する
+                    cubes[i].transform.parent = newRoot.transform;
+                    // 保存リストに追加
+                    save.Add(cubes[i]);
+                    // 再帰
+                    save = ObjectSplit(cubes[i], save, newRoot);
+
+                }
+            }
+           
         }
         // 終了処理
         return save;
@@ -97,38 +102,38 @@ public class CubeSprit : MonoBehaviour
         // 最初はリソース確保のためのnew
         ray = new Ray(cube.transform.position, cube.transform.up);
         if (Physics.Raycast(ray, out hit, 1.0f,layerMask))
-            if(hit.collider.tag == "Block")
+            if(hit.collider.tag == "Block" || hit.collider.tag == "Object")
                  cubes.Add(hit.collider.gameObject);
         // 下方向
         // インスタンスを再利用する
         ray.origin = cube.transform.position;
         ray.direction = -cube.transform.up;
         if (Physics.Raycast(ray, out hit, 1.0f, layerMask))
-            if (hit.collider.tag == "Block")
+            if (hit.collider.tag == "Block" || hit.collider.tag == "Object")
                 cubes.Add(hit.collider.gameObject);
         // 左方向
         ray.origin = cube.transform.position;
         ray.direction = -cube.transform.right;
         if (Physics.Raycast(ray, out hit, 1.0f, layerMask))
-            if (hit.collider.tag == "Block")
+            if (hit.collider.tag == "Block" || hit.collider.tag == "Object")
                 cubes.Add(hit.collider.gameObject);
         // 右方向
         ray.origin = cube.transform.position;
         ray.direction = cube.transform.right;
         if (Physics.Raycast(ray, out hit, 1.0f, layerMask))
-            if (hit.collider.tag == "Block")
+            if (hit.collider.tag == "Block" || hit.collider.tag == "Object")
                 cubes.Add(hit.collider.gameObject);
         // 前方
         ray.origin = cube.transform.position;
         ray.direction = cube.transform.forward;
         if (Physics.Raycast(ray, out hit, 1.0f, layerMask))
-            if (hit.collider.tag == "Block")
+            if (hit.collider.tag == "Block" || hit.collider.tag == "Object")
                 cubes.Add(hit.collider.gameObject);
         // 後方
         ray.origin = cube.transform.position;
         ray.direction = -cube.transform.forward;
         if (Physics.Raycast(ray, out hit, 1.0f, layerMask))
-            if (hit.collider.tag == "Block")
+            if (hit.collider.tag == "Block" || hit.collider.tag == "Object")
                 cubes.Add(hit.collider.gameObject);
 
         return cubes;
