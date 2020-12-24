@@ -60,6 +60,8 @@ namespace Car
         [SerializeField] private float m_SlipLimit;
         // ブレーキ時の回転数
         [SerializeField] private float m_BrakeTorque;
+      
+
 
         // 回転させるためのメッシュ
         private Quaternion[] m_WheelMeshLocalRotations;
@@ -69,6 +71,7 @@ namespace Car
         private float m_SteerAngle;
         // ギアの番号
         private int m_GearNum;
+
         // 
         private float m_GearFactor;
         private float m_OldRotation;
@@ -76,18 +79,46 @@ namespace Car
         private Rigidbody m_Rigidbody;
         private const float k_ReversingThreshold = 0.01f;
 
+        public ParticleSystem windParticle;
+
+        // ダッシュの力
+        private float dashForce= 50.0f;
+
+        // 押した瞬間を判定するための変数
+        private float lastDash;
+
+        // 横転しているかどうか
+        private bool isRestarted = false;
+
 
         public bool Skidding { get; private set; }
         public float BrakeInput { get; private set; }
         public float CurrentSteerAngle{ get { return m_SteerAngle; }}
         public float CurrentSpeed{ get { return m_Rigidbody.velocity.magnitude*2.23693629f; }}
-        public float MaxSpeed{get { return m_Topspeed; }}
+        public float MaxSpeed { get { return m_Topspeed; } }
         public float Revs { get; private set; }
         public float AccelInput { get; private set; }
+        // アクセサ
+        public bool GetRestarted() { return isRestarted; }
+        public void SetRestarted(bool restarted) { isRestarted = restarted; }
+        // 座標
+        public void SetPos(Vector3 pos) { this.transform.position = pos; }
+        public Vector3 GetPos() { return this.transform.position; }
+        // 回転
+        public void SetRot(Quaternion rot) { this.transform.rotation = rot; }
+        public Quaternion GetRot() { return this.transform.rotation; }
+        // 速度
+        public void SetSpeed(Vector3 velocity) { m_Rigidbody.velocity = velocity; }
+        public Vector3 GetSpeed() { return m_Rigidbody.velocity; }
 
         // Use this for initialization
         private void Start()
         {
+
+            windParticle.Stop();
+
+            lastDash = 0.0f;
+
             m_WheelMeshLocalRotations = new Quaternion[4];
             for (int i = 0; i < 4; i++)
             {
@@ -156,7 +187,7 @@ namespace Car
         }
 
 
-        public void Move(float steering, float accel, float footbrake, float handbrake)
+        public void Move(float steering, float accel, float footbrake, float dash)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -171,7 +202,7 @@ namespace Car
             steering = Mathf.Clamp(steering, -1, 1);
             AccelInput = accel = Mathf.Clamp(accel, 0, 1);
             BrakeInput = footbrake = -1*Mathf.Clamp(footbrake, -1, 0);
-            handbrake = Mathf.Clamp(handbrake, 0, 1);
+            dash = Mathf.Clamp(dash, 0, 1);
 
             //Set the steer on the front wheels.
             //Assuming that wheels 0 and 1 are the front wheels.
@@ -185,13 +216,18 @@ namespace Car
 
             //Set the handbrake.
             //Assuming that wheels 2 and 3 are the rear wheels.
-            if (handbrake > 0f)
+            if (dash > 0f && lastDash == 0.0f)
             {
-                var hbTorque = handbrake*m_MaxHandbrakeTorque;
-                m_WheelColliders[2].brakeTorque = hbTorque;
-                m_WheelColliders[3].brakeTorque = hbTorque;
+                SetSpeed(m_Rigidbody.velocity * 1.5f);
+                windParticle.Play();
+            }
+            else
+            {
+                windParticle.Stop();
             }
 
+            // 毎フレームダッシュが押されているか入れる
+            lastDash = dash;
 
             CalculateRevs();
             GearChanging();
@@ -199,12 +235,23 @@ namespace Car
             AddDownForce();
             CheckForWheelSpin();
             TractionControl();
+            
         }
 
+        public void Restart(float restart)
+        {
+            restart = Mathf.Clamp(restart,0,1);
+
+            if (restart != 0)
+            {
+                isRestarted = true;
+            }
+        }
 
         private void CapSpeed()
         {
             float speed = m_Rigidbody.velocity.magnitude;
+
             switch (m_SpeedType)
             {
                 case SpeedType.MPH:

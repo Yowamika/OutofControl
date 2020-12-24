@@ -44,8 +44,8 @@ public class GrenadeScript : MonoBehaviour
             }
             if(cubes.Length > 0)
             {
-                // オブジェクトの分離処理
-                spritter.CheckSplit(root);
+                //// オブジェクトの分離処理
+                //spritter.CheckSplit(root);
             }
             Destroy(this.gameObject);
         }

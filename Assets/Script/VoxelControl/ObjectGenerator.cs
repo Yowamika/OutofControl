@@ -241,7 +241,7 @@ public class ObjectGenerator : MonoBehaviour
             // マテリアルを適用
             go.GetComponentInChildren<Renderer>().material = materialList[m][data[(int)DataType.MATERIAL]];
             // オブジェクト番号０(四角）以外なら
-            if (data[(int)DataType.OBJECT] != (int)ObjectType.CUBE && data[(int)DataType.OBJECT] == (int)ObjectType.STAGE)
+            if (data[(int)DataType.OBJECT] != (int)ObjectType.CUBE && data[(int)DataType.OBJECT] != (int)ObjectType.STAGE)
             {
                 // 回転を適用
                 go.transform.localEulerAngles = rotationList[data[(int)DataType.ROTATION]];

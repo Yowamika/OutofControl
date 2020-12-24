@@ -9,6 +9,15 @@ namespace Car
     {
         private CarController m_Car; // the car controller we want to use
 
+        private float h, v, re, dash;
+     
+        public void SetHorizontal(float _h) { h = _h; }
+
+        public void SetVertical(float _v) { v = _v; }
+
+        public void SetRestart(float _re) { re = _re; }
+
+        public void SetDash(float _dash) { dash = _dash; }
 
         private void Awake()
         {
@@ -20,14 +29,19 @@ namespace Car
         private void FixedUpdate()
         {
             // pass the input to the car!
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
+            h = Input.GetAxis("Horizontal") ;
+            v = Input.GetAxis("Vertical");
+            re = Input.GetAxis("Fire2");
+
 #if !MOBILE_INPUT
-            float handbrake = Input.GetAxis("Jump");
-            m_Car.Move(h, v, v, handbrake);
+
+            dash = Input.GetAxis("Jump");
+            m_Car.Move(h, v, v, dash);
+            m_Car.Restart(re);
 #else
             m_Car.Move(h, v, v, 0f);
 #endif
+            
         }
     }
 }
