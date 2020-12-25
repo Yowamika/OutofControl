@@ -1129,7 +1129,7 @@ MonoBehaviour:
   objectPrefab: {fileID: 2901210351014153015, guid: 5c820559cabd1e64d84c1a3feb22e3a2,
     type: 3}
   bedlock: {fileID: 311514637}
-  stagename: Stage2.csv
+  stagename: kakashi.csv
   cubeList: []
   cubeMatList: 
   objList:

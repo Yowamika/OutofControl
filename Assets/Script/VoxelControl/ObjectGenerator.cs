@@ -55,7 +55,6 @@ public class ObjectGenerator : MonoBehaviour
     // cubeのマテリアル情報
     [SerializeField]
     List<int> cubeMatList = new List<int>();
-
     // 用意されたオブジェクトのリスト
     [SerializeField]
     List<GameObject> objList = new List<GameObject>();
@@ -202,33 +201,34 @@ public class ObjectGenerator : MonoBehaviour
         return list;
     }
     // ---------------------------------------------------
-    // CSVファイルを基にステージを生成する
+    // CSVファイルを基にブロックを生成する
     // data CSVを読み込んだリスト
-    void StageGenerate(int[] data)
+    void BlockGenerate(string[] data)
     {
+        int[] dataInt = data.Select(int.Parse).ToArray();
         // 一時保管用
         GameObject bamp;
         // 優しい坂かそれ以外かを選別
-        if (data[(int)DataType.OBJECT] / MULTIPLE_NUM > 0)
-            bamp = multipleObjList[data[(int)DataType.OBJECT] / MULTIPLE_NUM - 1].list[data[(int)DataType.OBJECT] % MULTIPLE_NUM];
+        if (dataInt[(int)DataType.OBJECT] / MULTIPLE_NUM > 0)
+            bamp = multipleObjList[dataInt[(int)DataType.OBJECT] / MULTIPLE_NUM - 1].list[dataInt[(int)DataType.OBJECT] % MULTIPLE_NUM];
         else
-            bamp = objList[data[(int)DataType.OBJECT]];
+            bamp = objList[dataInt[(int)DataType.OBJECT]];
 
         // マテリアルナンバーを取得
-        int m = GetMaterialNumberforMutiple(data[(int)DataType.OBJECT]);
+        int m = GetMaterialNumberforMutiple(dataInt[(int)DataType.OBJECT]);
 
         // 座標を決定(岩盤考慮せず)
-        Vector3 v = new Vector3(data[(int)DataType.POS_X] + (bedlock.position.x + 1), data[(int)DataType.POS_Y] + (bedlock.position.y + 1), data[(int)DataType.POS_Z] + (bedlock.position.z + 1));
+        Vector3 v = new Vector3(dataInt[(int)DataType.POS_X] + (bedlock.position.x + 1), dataInt[(int)DataType.POS_Y] + (bedlock.position.y + 1), dataInt[(int)DataType.POS_Z] + (bedlock.position.z + 1));
 
-        if (data[(int)DataType.OBJECT] == (int)ObjectType.STAGE)
+        if (dataInt[(int)DataType.OBJECT] == (int)ObjectType.STAGE)
         {
             // スタート位置
-            if (data[(int)DataType.MATERIAL] == 1)
+            if (dataInt[(int)DataType.MATERIAL] == 1)
             {
                 car.transform.position = v;
             }
             // ゴール位置
-            else if (data[(int)DataType.MATERIAL] == 2)
+            else if (dataInt[(int)DataType.MATERIAL] == 2)
             {
                 goal.transform.position = v;
             }
@@ -239,12 +239,12 @@ public class ObjectGenerator : MonoBehaviour
             GameObject go = Instantiate(bamp, v, Quaternion.identity);
             go.name = gene_count.ToString();
             // マテリアルを適用
-            go.GetComponentInChildren<Renderer>().material = materialList[m][data[(int)DataType.MATERIAL]];
+            go.GetComponentInChildren<Renderer>().material = materialList[m][dataInt[(int)DataType.MATERIAL]];
             // オブジェクト番号０(四角）以外なら
-            if (data[(int)DataType.OBJECT] != (int)ObjectType.CUBE && data[(int)DataType.OBJECT] != (int)ObjectType.STAGE)
+            if (dataInt[(int)DataType.OBJECT] != (int)ObjectType.CUBE && dataInt[(int)DataType.OBJECT] != (int)ObjectType.STAGE)
             {
                 // 回転を適用
-                go.transform.localEulerAngles = rotationList[data[(int)DataType.ROTATION]];
+                go.transform.localEulerAngles = rotationList[dataInt[(int)DataType.ROTATION]];
             }
             // 大本のオブジェクトを親として設定
             go.transform.parent = parentObject.transform;
@@ -252,6 +252,13 @@ public class ObjectGenerator : MonoBehaviour
             cubeList.Add(go.GetComponent<Cube>());
         }
         gene_count++;
+    }
+    // ---------------------------------------------------
+    // CSVファイルを基にスタンプを生成する
+    // data スタンプの文字列情報リスト
+    void StampGenerate(string[] data)
+    {
+
     }
     // ---------------------------------------------------
     // 指定スケールの立方体を生成
@@ -497,21 +504,34 @@ public class ObjectGenerator : MonoBehaviour
         List<string[]> dataList = new List<string[]>();
         // ファイル読み込み
         dataList = LoadCSV(filepath);
-        // <csvを基にステージを生成>
-
-        // リストがstring配列なのでint配列に変換(bit演算　LINQ使用)
-        var dataListInt = dataList.ConvertAll(x => x.Select(int.Parse).ToArray());
-       
-
+        bool StampGenerate = false;
         int i = 0;
         // <ステージ生成>
-        foreach (var d in dataListInt)
+        foreach (var d in dataList)
         {
+            // 文字列部分スキップ
+            if (d[0] == "name")
+                continue;
+            // スタンプネームが出てきたら、次からはスタンプ生成になるので
+            // フラグON
+            else if(d[0] == "stampName")
+            {
+                StampGenerate = true;
+                continue;
+            }
             // ステージ生成関数
-            StageGenerate(d);
+            if(StampGenerate)
+            {
+
+            }
+            else
+            {
+                BlockGenerate(d);
+            }
+            
             if (i % 500 == 0)
             {
-                float progressVal = (float)i / (float)dataListInt.Count;
+                float progressVal = (float)i / (float)dataList.Count;
                 slider.value = progressVal;
 
                 yield return null;
