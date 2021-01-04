@@ -9,7 +9,6 @@ using System.Text;
 using System.IO;
 using System.Linq;
 using UnityEngine.UI;
-using System;
 
 [System.SerializableAttribute]
 public class MultipleList
@@ -99,8 +98,10 @@ public class ObjectGenerator : MonoBehaviour
     GameObject goal;
     // 優しい坂以上のアレ
     public const int MULTIPLE_NUM = 8;
-    // csvの保存ファイル
-    string csvDataFile = "/StreamingAssets/Data/csv/";
+    // ステージデータcsvの保存ファイル
+    string csvDataFile = "/StreamingAssets/Data/csv/StageFile/";
+    // 情報系csvの保存ファイル
+    string csvInfoFile = "/StreamingAssets/Data/csv/VoxelInfo/";
     [SerializeField]
     List<string> loadMaterialStr = new List<string>();
     // ロード中表示UI
@@ -122,10 +123,10 @@ public class ObjectGenerator : MonoBehaviour
         string csvExt = "Mat.csv";
         // 各マテリアル取得
         for (int i = 0; i < loadMaterialStr.Count; i++)
-            SetMaterialList(loadMaterialStr[i], Application.dataPath + csvDataFile + loadMaterialStr[i] + csvExt);
+            SetMaterialList(loadMaterialStr[i], Application.dataPath + csvInfoFile + loadMaterialStr[i] + csvExt);
         
         // <回転の固定値を設定>
-        SetRotationListInit(Application.dataPath + csvDataFile + "rotationList.csv");
+        SetRotationListInit(Application.dataPath + csvInfoFile + "rotationList.csv");
         // ファイルパスを初期化(ビルド後にも対応）
         filepath = Application.dataPath + csvDataFile + stagename;
     }
@@ -287,11 +288,6 @@ public class ObjectGenerator : MonoBehaviour
                 }
             }
         }
-        foreach(var c in cubeList)
-        {
-            // 軽量化
-            CheckVisible(c);
-        }
         isStageLoaded = true;
     }
     // ----------------------------------------------------
@@ -343,127 +339,6 @@ public class ObjectGenerator : MonoBehaviour
             // １行目はスキップする
             rotationList.Add(new Vector3(int.Parse(data[0]), int.Parse(data[1]), int.Parse(data[2])));
         }
-    }
-    // ---------------------------------------------------
-    // 全体をもとに周りにあるオブジェクトを取得
-    // cubeList キューブ全体のリスト
-    public Cube[] GirthCheck(Cube cube)
-    {
-        // 戻り値用リスト
-        List<Cube> cubes = new List<Cube>();
-        // 現在登録されているキューブから検索
-        foreach (var v in cubeList)
-        {
-            // 右チェック
-            if (cube.transform.position.x + 1 == v.transform.position.x &&
-                cube.transform.position.y == v.transform.position.y &&
-                cube.transform.position.z == v.transform.position.z)
-            {
-                cubes.Add(v);
-            }
-            // 左チェック
-            if (cube.transform.position.x - 1 == v.transform.position.x &&
-                cube.transform.position.y == v.transform.position.y &&
-                cube.transform.position.z == v.transform.position.z)
-            {
-                cubes.Add(v);
-            }
-            // 上チェック
-            if (cube.transform.position.x == v.transform.position.x &&
-                cube.transform.position.y + 1 == v.transform.position.y &&
-                cube.transform.position.z == v.transform.position.z)
-            {
-                cubes.Add(v);
-            }
-            // 下チェック
-            if (cube.transform.position.x == v.transform.position.x &&
-                cube.transform.position.y - 1 == v.transform.position.y &&
-                cube.transform.position.z == v.transform.position.z)
-            {
-                cubes.Add(v);
-            }
-            // 奥チェック
-            if (cube.transform.position.x == v.transform.position.x &&
-                cube.transform.position.y == v.transform.position.y &&
-                cube.transform.position.z + 1 == v.transform.position.z)
-            {
-                cubes.Add(v);
-            }
-            // 手前チェック
-            if (cube.transform.position.x == v.transform.position.x &&
-                cube.transform.position.y == v.transform.position.y &&
-                cube.transform.position.z - 1 == v.transform.position.z)
-            {
-                cubes.Add(v);
-            }
-        }
-        return cubes.ToArray();
-    }
-
-    // ---------------------------------------------------
-    // 親をもとに周りにあるオブジェクトを取得
-    // cubeList キューブ全体のリスト
-    public Cube[] GirthCheck(GameObject root,Cube cube)
-    {
-        // 戻り値用リスト
-        List<Cube> cubes = new List<Cube>();
-        // 現在登録されているキューブから検索
-        foreach (var v in root.GetComponentsInChildren<Cube>())
-        {
-            // 右チェック
-            if (cube.transform.position.x + 1 == v.transform.position.x &&
-                cube.transform.position.y == v.transform.position.y &&
-                cube.transform.position.z == v.transform.position.z)
-            {
-                cubes.Add(v);
-            }
-            // 左チェック
-            if (cube.transform.position.x - 1 == v.transform.position.x &&
-                cube.transform.position.y == v.transform.position.y &&
-                cube.transform.position.z == v.transform.position.z)
-            {
-                cubes.Add(v);
-            }
-            // 上チェック
-            if (cube.transform.position.x == v.transform.position.x &&
-                cube.transform.position.y + 1 == v.transform.position.y &&
-                cube.transform.position.z == v.transform.position.z)
-            {
-                cubes.Add(v);
-            }
-            // 下チェック
-            if (cube.transform.position.x == v.transform.position.x &&
-                cube.transform.position.y - 1 == v.transform.position.y &&
-                cube.transform.position.z == v.transform.position.z)
-            {
-                cubes.Add(v);
-            }
-            // 奥チェック
-            if (cube.transform.position.x == v.transform.position.x &&
-                cube.transform.position.y == v.transform.position.y &&
-                cube.transform.position.z + 1 == v.transform.position.z)
-            {
-                cubes.Add(v);
-            }
-            // 手前チェック
-            if (cube.transform.position.x == v.transform.position.x &&
-                cube.transform.position.y == v.transform.position.y &&
-                cube.transform.position.z - 1 == v.transform.position.z)
-            {
-                cubes.Add(v);
-            }
-        }
-        return cubes.ToArray();
-    }
-    // ---------------------------------------------------------------------------
-    // キューブの可視不可視を確認する
-    // cube 目的のキューブ
-    public void CheckVisible(Cube cube)
-    {
-        if (GirthCheck(cube).Count() == 6)
-            cube.SetVisable(false);
-        else
-            cube.SetVisable(true);
     }
     // ---------------------------------------------------------------------------
     // マルチなオブジェクトのマテリアルナンバーを取得
@@ -539,23 +414,6 @@ public class ObjectGenerator : MonoBehaviour
             i++;
         }
         isStageLoaded = true;
-        i = 0;
-        //if(isStageLoaded)
-        //{
-        //    foreach (var c in cubeList)
-        //    {
-        //        // 軽量化
-        //        CheckVisible(c);
-        //        if (i % 100 == 0)
-        //        {
-        //            float progressVal = (float)i / (float)dataListInt.Count;
-        //            slider.value = progressVal;
-
-        //            yield return null;
-        //        }
-        //        i++;
-        //    }
-        //}
         loadUI.SetActive(false);
         yield break;
     }

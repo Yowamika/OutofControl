@@ -40,8 +40,6 @@ public class Cube : MonoBehaviour
     // 最初のフレーム
     private void Start()
     {
-       // ジョイントにenableプロパティは存在しない
-       // 削除　後　再生成が唯一の手
     }
     // ---------------------------------------------------
     // アップデート関数
@@ -60,21 +58,13 @@ public class Cube : MonoBehaviour
         // 親がいる場合は崩れる処理
         if (this.transform.parent != null)
         {
-            //// 親の繋がりを絶つ
-            //this.transform.parent = null;
-            //// 詰まらないように破片の大きさを80%にする
-            //this.transform.localScale = new Vector3(FragmentScale, FragmentScale, FragmentScale);
-            //// 可視化する
-            //mesh.enabled = true;
-            //// 削除申請を出しておく（消されるのは数秒後
-            //Destroy(this.gameObject, DestroyTime);
-            
             // 代わりとなるオブジェクトを生成
             GameObject go = Instantiate(NewCube,this.transform.position, Quaternion.identity);
             // レイキャストを無視するレイヤー
             go.transform.localScale = new Vector3(FragmentScale, FragmentScale, FragmentScale);
             // 爆発処理をする
             go.GetComponent<Rigidbody>().AddExplosionForce(power, center, radius);
+            // 同じマテリアルを貼ってあげる
             go.GetComponent<Renderer>().material = renderer.material;
             this.transform.parent = null;
             // レイを無視するレイヤーに変更
@@ -82,9 +72,6 @@ public class Cube : MonoBehaviour
             Destroy(go, DestroyTime);
             Destroy(this.gameObject);
         }
-        
-        // 軽量化処理
-        // 接しているオブジェクトを取得
            
     }
     
