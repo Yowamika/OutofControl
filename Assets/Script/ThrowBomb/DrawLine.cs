@@ -57,7 +57,7 @@ public class DrawLine : MonoBehaviour
 
         DummyObjParent = this.gameObject.transform;
 
-        CarTransform = GameObject.Find("Car").transform;
+        CarTransform = GameObject.Find("Buggy").transform;
 
         //弾道予測を表示するための点を生成
         for (int i = 0; i < dummyCount; i++)

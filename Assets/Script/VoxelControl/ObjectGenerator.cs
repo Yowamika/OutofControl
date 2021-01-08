@@ -181,7 +181,7 @@ public class ObjectGenerator : MonoBehaviour
     // CSVを読み込む関数
     // path 読み込むファイルのアドレス
     // １行目をスキップするかどうか
-    List<string[]> LoadCSV(string path,bool skipfirst = false)
+    public List<string[]> LoadCSV(string path,bool skipfirst = false)
     {
         // 読み込みたいCSVファイルのパスを指定して開く(Shift-JISではビルドが通らなかった）
         StreamReader sr = new StreamReader(path, Encoding.GetEncoding("UTF-8"));
@@ -204,9 +204,12 @@ public class ObjectGenerator : MonoBehaviour
     // ---------------------------------------------------
     // CSVファイルを基にブロックを生成する
     // data CSVを読み込んだリスト
-    void BlockGenerate(string[] data)
+    // external 外部読み込みかどうか
+    public GameObject BlockGenerate(string[] data, bool external = false)
     {
         int[] dataInt = data.Select(int.Parse).ToArray();
+        // 戻り値用オブジェクト
+        GameObject returnObject = null;
         // 一時保管用
         GameObject bamp;
         // 優しい坂かそれ以外かを選別
@@ -247,12 +250,17 @@ public class ObjectGenerator : MonoBehaviour
                 // 回転を適用
                 go.transform.localEulerAngles = rotationList[dataInt[(int)DataType.ROTATION]];
             }
-            // 大本のオブジェクトを親として設定
-            go.transform.parent = parentObject.transform;
-            // 存在するキューブとして登録
-            cubeList.Add(go.GetComponent<Cube>());
+            if (!external)
+            {
+                // 大本のオブジェクトを親として設定
+                go.transform.parent = parentObject.transform;
+                // 存在するキューブとして登録
+                cubeList.Add(go.GetComponent<Cube>());
+            }
+            returnObject = go;
         }
         gene_count++;
+        return returnObject;
     }
     // ---------------------------------------------------
     // CSVファイルを基にスタンプを生成する

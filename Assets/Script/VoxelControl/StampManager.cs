@@ -11,11 +11,25 @@ using System.Text;
 public class StampManager : MonoBehaviour
 {
     // ジェネレーター
+    ObjectGenerator generator;
     // スタンプの名前リスト
     public List<string> stampNameList;
+    // スタンプの座標リスト
+    public List<List<GameObject>> stampPosList;
     // スタンプのマテリアル番号リスト
-
-    // Start is called before the first frame update
+    public List<List<int>> matNumList;
+    // 作成したPrefabのリスト
+    public List<GameObject> prefabList;
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    private void Awake()
+    {
+        generator = this.GetComponent<ObjectGenerator>();
+    }
+    /// <summary>
+    /// 最初のフレーム
+    /// </summary>
     void Start()
     {
         // フォルダパス
@@ -23,44 +37,29 @@ public class StampManager : MonoBehaviour
 
         // フォルダ内にあるファイルを全て読み込む
         string[] files = Directory.GetFiles(path, "*.csv", System.IO.SearchOption.AllDirectories);
+        
         // 読み込んだフォルダを元にPrefabを作成する
         for (int i = 0; i < files.Length; i++)
         {
+            // 読み込んだCSVを保存するリスト
+            List<string[]> data = new List<string[]>();
+
+            stampPosList.Add(new List<GameObject>());
+            matNumList.Add(new List<int>());
+            // CSV読み込み
+            data = generator.LoadCSV(files[i]);
+            // 親用のオブジェクト
+            GameObject parent = new GameObject();
+            // CSVをもとにスタンプのオブジェクト群を生成
+            foreach (var d in data)
+            {
+                // 外部読み込みでブロック生成
+                GameObject obj = generator.BlockGenerate(d,true);
+            }
+            // Prefab作成
 
         }
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    // ObjectGeneratorからのコピペ こいつライブラリ的なのにぶち込みたい
-    /// <summary>
-    /// CSVを読み込む関数
-    /// </summary>
-    /// <param name="path">読み込むファイルのアドレス</param>
-    /// <param name="skipfirst">1行目をスキップするかどうか</param>
-    /// <returns></returns>
-    List<string[]> LoadCSV(string path, bool skipfirst = false)
-    {
-        // 読み込みたいCSVファイルのパスを指定して開く(Shift-JISではビルドが通らなかった）
-        StreamReader sr = new StreamReader(path, Encoding.GetEncoding("UTF-8"));
-        // 戻り値
-        List<string[]> list = new List<string[]>();
-        // 一行読み飛ばす
-        sr.ReadLine();
-        // 末尾まで繰り返す
-        while (!sr.EndOfStream)
-        {
-            // CSVファイルの一行を読み込む
-            string line = sr.ReadLine();
-            // 読み込んだ一行をカンマ毎に分けて配列に格納する
-            string[] values = line.Split(',');
-            // 配列からリストに格納する
-            list.Add(values);
-        }
-        return list;
-    }
 }

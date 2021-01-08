@@ -34,6 +34,7 @@ public class GrenadeThrow : MonoBehaviour
     float count = 0f;
 
     AudioSource audioSource;
+
     [SerializeField]
     AudioClip clip;
     // Start is called before the first frame update
@@ -47,7 +48,7 @@ public class GrenadeThrow : MonoBehaviour
     void Update()
     {
         Pos = PosParent.transform.position;
-        Pos = new Vector3(Pos.x, Pos.y+2f, Pos.z); // グレの位置を車両の近くに設定
+        Pos = new Vector3(Pos.x, Pos.y+3f, Pos.z); // グレの位置を車両の近くに設定
 
         cameraPos = Camera.main.transform.position; // カメラの位置
         
@@ -72,11 +73,15 @@ public class GrenadeThrow : MonoBehaviour
             {
                 
                 BombStock--;
-                rb_ball.isKinematic = false;
-                rb_ball.AddForce(throwDirection + carRigid.velocity, ForceMode.Impulse); // カーソルの方向に力を一度加える
-                audioSource.PlayOneShot(clip);
-                //GrenadeScript grenade = rb_ball.GetComponent<GrenadeScript>(); // 爆発するスクリプトの取得
-                //grenade.enabled = true; // 爆発スクリプトをアクティブに変更            
+
+                if (rb_ball != null)
+                {
+                    rb_ball.isKinematic = false;
+                    rb_ball.AddForce(throwDirection + carRigid.velocity, ForceMode.Impulse); // カーソルの方向に力を一度加える
+                    audioSource.PlayOneShot(clip);
+                    //GrenadeScript grenade = rb_ball.GetComponent<GrenadeScript>(); // 爆発するスクリプトの取得
+                    //grenade.enabled = true; // 爆発スクリプトをアクティブに変更    
+                }        
             }
             
         }
