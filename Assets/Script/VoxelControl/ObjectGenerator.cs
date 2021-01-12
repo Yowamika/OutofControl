@@ -65,6 +65,11 @@ public class ObjectGenerator : MonoBehaviour
     // 固定回転値を保存するリスト
     List<Vector3> rotationList = new List<Vector3>();
 
+    // スタンプのPrefabリスト
+    [SerializeField]
+    List<GameObject> stampList = new List<GameObject>();
+    // スタンプの名前を集めたリスト
+    List<string> stampNameList = new List<string>();
     // ステージがロードできたかどうか
     bool isStageLoaded = false;
     // ステージID
@@ -78,8 +83,8 @@ public class ObjectGenerator : MonoBehaviour
         SHORTSLOPE = 8,
         LONGSLOPE = 9,
     };
-    // CSVデータの列挙体(行)
-    enum DataType
+    // ボックスのCSVデータの列挙体(行)
+    enum BoxDataType
     {
         POS_X = 0,       // X座標
         POS_Y,           // Y座標
@@ -90,6 +95,19 @@ public class ObjectGenerator : MonoBehaviour
 
         SUMTYPE          // データタイプの合計
     };
+    // スタンプのCSVデータの列挙体(行）
+    enum StampDataType
+    {
+        STAMPNAME = 0,  // スタンプの名前
+        POS_X,          // X座標
+        POS_Y,          // Y座標
+        POS_Z,          // Z座標
+        ROT_X,          // X回転
+        ROT_Y,          // Y回転
+        ROT_Z,          // Z回転
+
+        SUMTYPE         // データタイプ合計
+    }
     // 車の情報
     [SerializeField]
     GameObject car;
@@ -129,6 +147,11 @@ public class ObjectGenerator : MonoBehaviour
         SetRotationListInit(Application.dataPath + csvInfoFile + "rotationList.csv");
         // ファイルパスを初期化(ビルド後にも対応）
         filepath = Application.dataPath + csvDataFile + stagename;
+        // スタンプネームリストに追加していく
+        foreach(var v in stampList)
+        {
+            stampNameList.Add(v.name);
+        }
     }
     // ---------------------------------------------------
     // スタート関数
@@ -213,26 +236,26 @@ public class ObjectGenerator : MonoBehaviour
         // 一時保管用
         GameObject bamp;
         // 優しい坂かそれ以外かを選別
-        if (dataInt[(int)DataType.OBJECT] / MULTIPLE_NUM > 0)
-            bamp = multipleObjList[dataInt[(int)DataType.OBJECT] / MULTIPLE_NUM - 1].list[dataInt[(int)DataType.OBJECT] % MULTIPLE_NUM];
+        if (dataInt[(int)BoxDataType.OBJECT] / MULTIPLE_NUM > 0)
+            bamp = multipleObjList[dataInt[(int)BoxDataType.OBJECT] / MULTIPLE_NUM - 1].list[dataInt[(int)BoxDataType.OBJECT] % MULTIPLE_NUM];
         else
-            bamp = objList[dataInt[(int)DataType.OBJECT]];
+            bamp = objList[dataInt[(int)BoxDataType.OBJECT]];
 
         // マテリアルナンバーを取得
-        int m = GetMaterialNumberforMutiple(dataInt[(int)DataType.OBJECT]);
+        int m = GetMaterialNumberforMutiple(dataInt[(int)BoxDataType.OBJECT]);
 
         // 座標を決定(岩盤考慮せず)
-        Vector3 v = new Vector3(dataInt[(int)DataType.POS_X] + (bedlock.position.x + 1), dataInt[(int)DataType.POS_Y] + (bedlock.position.y + 1), dataInt[(int)DataType.POS_Z] + (bedlock.position.z + 1));
+        Vector3 v = new Vector3(dataInt[(int)BoxDataType.POS_X] + (bedlock.position.x + 1), dataInt[(int)BoxDataType.POS_Y] + (bedlock.position.y + 1), dataInt[(int)BoxDataType.POS_Z] + (bedlock.position.z + 1));
 
-        if (dataInt[(int)DataType.OBJECT] == (int)ObjectType.STAGE)
+        if (dataInt[(int)BoxDataType.OBJECT] == (int)ObjectType.STAGE)
         {
             // スタート位置
-            if (dataInt[(int)DataType.MATERIAL] == 1)
+            if (dataInt[(int)BoxDataType.MATERIAL] == 1)
             {
                 car.transform.position = v;
             }
             // ゴール位置
-            else if (dataInt[(int)DataType.MATERIAL] == 2)
+            else if (dataInt[(int)BoxDataType.MATERIAL] == 2)
             {
                 goal.transform.position = v;
             }
@@ -243,12 +266,12 @@ public class ObjectGenerator : MonoBehaviour
             GameObject go = Instantiate(bamp, v, Quaternion.identity);
             go.name = gene_count.ToString();
             // マテリアルを適用
-            go.GetComponentInChildren<Renderer>().material = materialList[m][dataInt[(int)DataType.MATERIAL]];
+            go.GetComponentInChildren<Renderer>().material = materialList[m][dataInt[(int)BoxDataType.MATERIAL]];
             // オブジェクト番号０(四角）以外なら
-            if (dataInt[(int)DataType.OBJECT] != (int)ObjectType.CUBE && dataInt[(int)DataType.OBJECT] != (int)ObjectType.STAGE)
+            if (dataInt[(int)BoxDataType.OBJECT] != (int)ObjectType.CUBE && dataInt[(int)BoxDataType.OBJECT] != (int)ObjectType.STAGE)
             {
                 // 回転を適用
-                go.transform.localEulerAngles = rotationList[dataInt[(int)DataType.ROTATION]];
+                go.transform.localEulerAngles = rotationList[dataInt[(int)BoxDataType.ROTATION]];
             }
             if (!external)
             {
@@ -267,7 +290,8 @@ public class ObjectGenerator : MonoBehaviour
     // data スタンプの文字列情報リスト
     void StampGenerate(string[] data)
     {
-
+        // 入ってきたデータの名前をもとにプレファブ生成
+        stampList[(int)StampDataType.STAMPNAME]
     }
     // ---------------------------------------------------
     // 指定スケールの立方体を生成
@@ -387,7 +411,7 @@ public class ObjectGenerator : MonoBehaviour
         List<string[]> dataList = new List<string[]>();
         // ファイル読み込み
         dataList = LoadCSV(filepath);
-        bool StampGenerate = false;
+        bool stampG = false;
         int i = 0;
         // <ステージ生成>
         foreach (var d in dataList)
@@ -399,13 +423,13 @@ public class ObjectGenerator : MonoBehaviour
             // フラグON
             else if(d[0] == "stampName")
             {
-                StampGenerate = true;
+                stampG = true;
                 continue;
             }
             // ステージ生成関数
-            if(StampGenerate)
+            if(stampG)
             {
-
+                StampGenerate(d);
             }
             else
             {

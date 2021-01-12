@@ -1155,6 +1155,7 @@ MonoBehaviour:
   - list:
     - {fileID: 1061899807350035788, guid: a5954f20715a8b94babfabdbaae8dba3, type: 3}
     - {fileID: 5018163948094673543, guid: 09bcf377a9821f443a90d3da242f8cbd, type: 3}
+  stampList: []
   car: {fileID: 0}
   goal: {fileID: 1843979948}
   loadMaterialStr:
