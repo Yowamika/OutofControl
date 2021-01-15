@@ -12,10 +12,6 @@ public class stampScript : MonoBehaviour
 
     // スタンプの名前
     public List<string> stampNameList;
-    // 結局使わんかったじゃんお前…
-    public List<List<GameObject>> stampPosList;
-    // スタンプのマテリアル番号のリスト
-    public List<List<int>> matNumList;
     // 作ったprefabのリスト
     public List<GameObject> prefabList;
     // 表示用
@@ -31,8 +27,6 @@ public class stampScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        stampPosList = new List<List<GameObject>>();
-        matNumList = new List<List<int>>();
         prefabList = new List<GameObject>();
         prefabObj = null;
 
@@ -47,30 +41,41 @@ public class stampScript : MonoBehaviour
         // AllDirectoriesだとフォルダ内のフォルダも調べる　TopDirectoryOnlyだとフォルダ直下のやつだけ
         string[] files = Directory.GetFiles(path, "*.csv", System.IO.SearchOption.AllDirectories);
 
+        // pathのフォルダー（stamps）内にあるcsvをスタンプに変換
         for (int i = 0; i < files.Length; i++) 
         {
-            stampPosList.Add(new List<GameObject>());
-            matNumList.Add(new List<int>());
-            holder.LoadCSV(files[i], stampPosList[i], matNumList[i]);
-
-            GameObject obj = new GameObject();
-            for (int j = 0; j < stampPosList[i].Count; j++)
-            {
-                stampPosList[i][j].transform.parent = obj.transform;
-            }
-            // prefab作成
             // GetFileNameWithoutExtention() 拡張子とかフォルダとかを抜きにしたファイル名だけくれるやつ(string)
             string name = System.IO.Path.GetFileNameWithoutExtension(files[i]);
-            var prefab = PrefabUtility.SaveAsPrefabAsset(obj, "Assets/VoxelTool/Stamp/" + name + ".prefab");
-            // シーンから削除
-            Destroy(obj);
-            // 作ったprefabを保存
-            AssetDatabase.SaveAssets();
-            // listに追加
-            prefabList.Add(prefab);
-            stampNameList.Add(name);
-        }
 
+            string[] search = Directory.GetFiles(Application.dataPath + "/VoxelTool/Stamp/", name + ".prefab", System.IO.SearchOption.AllDirectories);
+            if (search.Length == 0)
+            {
+                List<GameObject> childList = new List<GameObject>();
+                holder.LoadCSV(files[i], childList, null);
+
+                GameObject obj = new GameObject();
+                for (int j = 0; j < childList.Count; j++)
+                {
+                    childList[j].transform.parent = obj.transform;
+                }
+                // prefab作成
+                var prefab = PrefabUtility.SaveAsPrefabAsset(obj, "Assets/VoxelTool/Stamp/" + name + ".prefab");
+                // シーンから削除  
+                Destroy(obj);
+                // 作ったprefabを保存
+                AssetDatabase.SaveAssets();
+                // listに追加
+                prefabList.Add(prefab);
+                stampNameList.Add(name);
+            }
+            else
+            {
+                GameObject prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/VoxelTool/Stamp/" + name + ".prefab");
+                prefabList.Add(prefab);
+                stampNameList.Add(name);
+            }
+
+        }
         // dropdownに名前を追加
         stampDropdown.AddOptions(stampNameList);
         stampDropdown.value = 0;
@@ -163,7 +168,7 @@ public class stampScript : MonoBehaviour
                     // 重なってたらholderの方を消す
                     holder.CompareCubeList(obj.gameObject);
                 }
-                // 名前を変更　というか(Instance)を消す
+                // 名前を変更　というか(Clone)を消す
                 prefabObj.name = stampDropdown.captionText.text;
                 // 配置中のスタンプリストに追加
                 holder.stampList.Add(prefabObj);
@@ -181,20 +186,20 @@ public class stampScript : MonoBehaviour
 
     }
 
-    // -----------------------------------------------
-    // 終了時に呼び出されるやつ
-    private void OnApplicationQuit()
-    {
-        string path = Application.dataPath + "/VoxelTool/Stamp";
-        string[] files = System.IO.Directory.GetFiles(path, "*.prefab", SearchOption.AllDirectories);
+    //// -----------------------------------------------
+    //// 終了時に呼び出されるやつ
+    //private void OnApplicationQuit()
+    //{
+    //    string path = Application.dataPath + "/VoxelTool/Stamp";
+    //    string[] files = System.IO.Directory.GetFiles(path, "*.prefab", SearchOption.AllDirectories);
 
-        // 作ったぷれふぁぶとめたふぁいるをけす
-        for (int i = 0; i < files.Length; i++)
-        {
-            //Debug.Log("delete " + files[i]);
-            File.Delete(files[i]);
-            File.Delete(files[i] + ".meta");
-        }
+    //    // 作ったぷれふぁぶとめたふぁいるをけす
+    //    for (int i = 0; i < files.Length; i++)
+    //    {
+    //        //Debug.Log("delete " + files[i]);
+    //        File.Delete(files[i]);
+    //        File.Delete(files[i] + ".meta");
+    //    }
         
-    }
+    //}
 }

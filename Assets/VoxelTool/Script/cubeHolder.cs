@@ -122,6 +122,10 @@ public class cubeHolder : MonoBehaviour
         {
             Destroy(obj);
         }
+        foreach(GameObject obj in stampList)
+        {
+            Destroy(obj);
+        }
         cubeList.Clear();
         cubeMatList.Clear();
         stampList.Clear();
@@ -300,8 +304,14 @@ public class cubeHolder : MonoBehaviour
                     // 正方形以外なら回転をかける
                     c.transform.GetChild(0).localEulerAngles = rotationList[data[(int)SAVE.ROTATION]];
                 }
-                listC.Add(c);
-                listM.Add(data[(int)SAVE.MATERIALNUM]);
+                if (listC != null)
+                {
+                    listC.Add(c);
+                }
+                if (listM != null)
+                {
+                    listM.Add(data[(int)SAVE.MATERIALNUM]);
+                }
             }
 
             // スタンプ配置オブジェクトを読み込む
@@ -317,13 +327,14 @@ public class cubeHolder : MonoBehaviour
                     GameObject stampPrefab = Instantiate(stampObject.prefabList[n],
                         new Vector3(stampPosList[i][(int)STAMP_SAVE.POSX], stampPosList[i][(int)STAMP_SAVE.POSY], stampPosList[i][(int)STAMP_SAVE.POSZ]),
                         rot);
-                    // (Clone)を消す
-                    stampPrefab.name = stampNameList[i];
+
                     // 子オブジェクトたちを逆回転させて普通にする　Inverse便利～
-                    foreach (Transform child in stampPrefab.transform)
+                    foreach(Transform child in stampPrefab.transform)
                     {
                         child.localRotation = Quaternion.Inverse(rot);
                     }
+                    // (Clone)を消す
+                    stampPrefab.name = stampNameList[i];
                     // stampListにさっき作ったやつを入れる
                     stampList.Add(stampPrefab);
                 }
@@ -331,14 +342,15 @@ public class cubeHolder : MonoBehaviour
                 {
                     Debug.Log("cubeHolder.LoadCSV():" + stampNameList[i] + "がありません");
                 }
-                
+
             }
         }
-        
         else
         {
             Debug.Log("cubeHolder.LoadCSV():ヘッダーが違います");
         }
+        // 閉じ忘れないようにね！！
+        sr.Close();
     }
 
 

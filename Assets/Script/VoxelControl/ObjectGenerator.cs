@@ -291,7 +291,26 @@ public class ObjectGenerator : MonoBehaviour
     void StampGenerate(string[] data)
     {
         // 入ってきたデータの名前をもとにプレファブ生成
-        stampList[(int)StampDataType.STAMPNAME]
+        // 名前を基に生成するスタンプを検索して取得
+        int n = stampNameList.IndexOf(data[(int)StampDataType.STAMPNAME]);
+        // エラー判定
+        if(n != -1)
+        {
+            // 回転値用意
+            Quaternion rot = Quaternion.Euler(float.Parse(data[(int)StampDataType.ROT_X]),
+                                              float.Parse(data[(int)StampDataType.ROT_Y]),
+                                              float.Parse(data[(int)StampDataType.ROT_Z]));
+            // Prefab生成
+            GameObject stampObject = Instantiate(stampList[n],
+                new Vector3(float.Parse(data[(int)StampDataType.POS_X]),
+                            float.Parse(data[(int)StampDataType.POS_Y]),
+                            float.Parse(data[(int)StampDataType.POS_Z])), rot);
+
+        }
+        else
+        {
+            Debug.Log("error:'ObjectGenerator' Stamp not find");
+        }
     }
     // ---------------------------------------------------
     // 指定スケールの立方体を生成
