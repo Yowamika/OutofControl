@@ -163,7 +163,6 @@ public class ObjectGenerator : MonoBehaviour
         //GenerateBox();
         // コルーチン開始
         StartCoroutine("LoadStage");
-
     }
     // 更新関数
     private void Update()
@@ -300,11 +299,11 @@ public class ObjectGenerator : MonoBehaviour
             Quaternion rot = Quaternion.Euler(float.Parse(data[(int)StampDataType.ROT_X]),
                                               float.Parse(data[(int)StampDataType.ROT_Y]),
                                               float.Parse(data[(int)StampDataType.ROT_Z]));
-            // Prefab生成
+            // Prefab生成(csv座標に1.0分のズレがあるため矯正する)
             GameObject stampObject = Instantiate(stampList[n],
-                new Vector3(float.Parse(data[(int)StampDataType.POS_X]),
-                            float.Parse(data[(int)StampDataType.POS_Y]),
-                            float.Parse(data[(int)StampDataType.POS_Z])), rot);
+                new Vector3(float.Parse(data[(int)StampDataType.POS_X]) + 1.0f,
+                            float.Parse(data[(int)StampDataType.POS_Y]) + 1.0f,
+                            float.Parse(data[(int)StampDataType.POS_Z]) + 1.0f), rot);
 
         }
         else

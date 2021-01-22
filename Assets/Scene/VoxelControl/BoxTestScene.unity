@@ -1132,9 +1132,9 @@ MonoBehaviour:
     - {fileID: 1061899807350035788, guid: a5954f20715a8b94babfabdbaae8dba3, type: 3}
     - {fileID: 5018163948094673543, guid: 09bcf377a9821f443a90d3da242f8cbd, type: 3}
   stampList:
-  - {fileID: 7239682209060550635, guid: 4b1db67a025c7d442a67fbbad73184a6, type: 3}
-  - {fileID: 8474288458647791051, guid: 2f31b2dba93c59745a047dd298d1d793, type: 3}
-  - {fileID: 4303540174177763876, guid: a3729baaa436e6e4eb5ecec5d6ae4faf, type: 3}
+  - {fileID: 1224449384244753782, guid: 5a244e670025a0d46937c01586185f3d, type: 3}
+  - {fileID: 3612509998283549529, guid: 1d9368bb4f2948143bf8a447584b8133, type: 3}
+  - {fileID: 5284477316812131434, guid: a0c5ad8a60c68bb459562957871576e7, type: 3}
   car: {fileID: 0}
   goal: {fileID: 1843979948}
   loadMaterialStr:
