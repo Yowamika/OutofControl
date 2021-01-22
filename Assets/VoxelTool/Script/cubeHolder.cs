@@ -448,16 +448,24 @@ public class cubeHolder : MonoBehaviour
 
     /// <summary>
     /// listに同じ位置のオブジェクトがないか探すやつ
-    /// 存在してた場合DeleteCubeListで元々あった方を消す
+    /// trueだったらなんか重なってた
     /// </summary>
     /// <param name="obj">同じ位置のがあるか探したいオブジェクト</param>
-    /// <returns></returns>
-    public bool CompareCubeList(GameObject obj)
+    /// <param name="deleteExisting">trueだったら元々置いてある方を消す　falseだったらobjを消す</param>
+    /// <returns>なんか置いてあったらtrue</returns>
+    public bool CompareCubeList(GameObject obj, bool deleteExisting = true)
     {
         GameObject g = GetHitCube(obj.transform.position);
         if(g)
         {
-            DeleteCubeList(g);
+            if(deleteExisting)
+            {
+                DeleteCubeList(g);
+            }
+            else
+            {
+                Destroy(obj);
+            }
             return true;
         }
 
@@ -577,7 +585,7 @@ public class cubeHolder : MonoBehaviour
     public Vector3 GetTargetPos(RaycastHit hit)
     {
         Vector3 pos = new Vector3();
-        if (hit.transform.parent.name == "bedrock")
+        if (hit.transform.name == "TonsQuad" || hit.transform.parent.name == "bedrock")
         {
             // 岩盤対策　Ceil(切り上げ)を使って都合のいい位置に置けるようにする
             pos = new Vector3(Mathf.Ceil(hit.point.x - 0.5f), Mathf.Ceil(hit.point.y), Mathf.Ceil(hit.point.z - 0.5f));

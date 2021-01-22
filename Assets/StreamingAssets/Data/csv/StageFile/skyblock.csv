@@ -27,7 +27,7 @@ x,y,z,objectNum,materialNum,rotation
 1,-2,0,0,3,0
 1,-2,-1,0,3,0
 stampName,posX,posY,posZ,rotX,rotY,rotZ
-tree,0,-1,-2,270,0,0
-tree,-2,-1,0,0,0,90
-tree,0,-1,2,90,0,0
-tree,2,-1,0,0,0,270
+tree(Clone),0,-1,-2,270,0,0
+tree(Clone),-2,-1,0,0,0,90
+tree(Clone),0,-1,2,90,0,0
+tree(Clone),2,-1,0,0,0,270

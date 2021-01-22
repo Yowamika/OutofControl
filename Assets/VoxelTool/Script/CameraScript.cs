@@ -77,10 +77,11 @@ public class CameraScript : MonoBehaviour
 
     public void CameraRotate(Vector2 angle)
     {
-        transform.RotateAround(target.position, transform.right, angle.x);
-        transform.RotateAround(target.position, Vector3.up, angle.y);
         target.RotateAround(target.position, transform.right, angle.x);
         target.RotateAround(target.position, Vector3.up, angle.y);
+        //transform.RotateAround(target.position, transform.right, angle.x);
+        //transform.RotateAround(target.position, Vector3.up, angle.y);
+        transform.rotation = target.rotation;
     }
 
     private void KeyMove()

@@ -8,6 +8,7 @@ public class paintButtonScript : MonoBehaviour
     enum MODE
     {
         FORM,
+        TONS,
         PAINT,
         STAMP,
         BEDROCKSIZE
@@ -16,26 +17,36 @@ public class paintButtonScript : MonoBehaviour
     private MODE mode = MODE.FORM;
     private MODE prevMode;
 
-    public Text text;
+    [SerializeField]
+    private Text text = null;      // 自分のテキスト
 
-    public paintScript paint;
-    public cubeJointScript form;
-    public stampScript stamp;
-    public BedrockScript bedrock;
+    [SerializeField]
+    private paintScript paint = null;
+    [SerializeField]
+    private cubeJointScript form = null;
+    [SerializeField]
+    private TonsScript tons = null;
+    [SerializeField]
+    private stampScript stamp = null;
+    [SerializeField]
+    private BedrockScript bedrock = null;
 
-    public Dropdown materialDropdown;
-    public Dropdown shapeDropdown;
+    [SerializeField]
+    private Dropdown materialDropdown = null;
+    [SerializeField]
+    private Dropdown shapeDropdown = null;
 
-    public Dropdown stampDropdown;
+    [SerializeField]
+    private Dropdown stampDropdown = null;
 
-    public Text operation;
+    [SerializeField]
+    private Text operation = null;
 
     // Start is called before the first frame update
     void Start()
     {
-        ChangeShapeDropdown(materialDropdown);
+        ChangeShapeDropdown();
         operation.text = "左クリック：置く\nShift+左クリック：消す(原点のは無理)\nドロップダウンで置くブロックとマテリアル変更";
-
     }
 
     // Update is called once per frame
@@ -48,6 +59,10 @@ public class paintButtonScript : MonoBehaviour
             case MODE.FORM:
                 if(flag)
                     form.Form();
+                break;
+            case MODE.TONS:
+                if (flag)
+                    tons.Tons();
                 break;
             case MODE.PAINT:
                 if(flag)
@@ -72,7 +87,17 @@ public class paintButtonScript : MonoBehaviour
         switch(mode)
         {
             case MODE.FORM:
+                text.text = "いっぱいおく";
+                shapeDropdown.gameObject.SetActive(false);
+                ChangeShapeDropdown(true);
+                mode = MODE.TONS;
+                operation.text = "左クリックで始点を決定\nもう一回左クリックでいっぱい置ける\n右クリックで始点とり直し";
+                break;
+            case MODE.TONS:
                 text.text = "いろぬり";
+                shapeDropdown.gameObject.SetActive(true);
+                ChangeShapeDropdown();
+                tons.Reset();
                 mode = MODE.PAINT;
                 operation.text = "左クリック：色変え\nドロップダウンで選択したブロックの色を変更可能\nドロップダウンでマテリアル変更";
                 break;
@@ -100,14 +125,20 @@ public class paintButtonScript : MonoBehaviour
 
     /// <summary>
     /// ドロップダウン用　置く形の方のドロップダウンを変えた時にマテリアルのドロップダウンも変更する
-    /// 引数いらないのは秘密
     /// </summary>
-    /// <param name="change">勝手に来る</param>
-    public void ChangeShapeDropdown(Dropdown change)
+    /// <param name="flag">trueだと0(正方形)のマテリアルドロップダウンに変更する</param>
+    public void ChangeShapeDropdown(bool flag = false)
     {
         // 引数で押されたドロップダウンを持って来れる　あとはvalueで数字取得したり
         materialDropdown.ClearOptions();
-        materialDropdown.AddOptions(form.holder.materialTextList[change.value]);
+        if(flag)
+        {
+            materialDropdown.AddOptions(form.holder.materialTextList[0]);
+        }
+        else
+        {
+            materialDropdown.AddOptions(form.holder.materialTextList[shapeDropdown.value]);
+        }
         materialDropdown.value = 0;
     }
 

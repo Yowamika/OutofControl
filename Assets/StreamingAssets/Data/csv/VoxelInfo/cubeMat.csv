@@ -3,3 +3,9 @@ name,pass
 はっぱ,LeafMaterial
 いし,StoneMaterial
 つち,SoilMaterial
+れんが,RengaMaterial
+がらす,GlassMaterial
+すな,SandMaterial
+白コンクリート,WhiteCementMaterial
+黒コンクリート,BlackCementMaterial
+壊せないレンガ,CantBreakRenga
