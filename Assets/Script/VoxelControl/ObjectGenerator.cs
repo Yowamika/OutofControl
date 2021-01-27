@@ -72,8 +72,6 @@ public class ObjectGenerator : MonoBehaviour
     List<string> stampNameList = new List<string>();
     // ステージがロードできたかどうか
     bool isStageLoaded = false;
-    // ステージID
-    int stageID = 1;
     // 存在するオブジェクトの種類
     enum ObjectType
     {

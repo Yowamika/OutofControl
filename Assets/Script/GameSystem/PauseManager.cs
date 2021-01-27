@@ -75,4 +75,9 @@ public class PauseManager : MonoBehaviour
         get { return pauseFlag; }
         set { pauseFlag = value; }
     }
+    // ポーズフラグのゲッタ
+    public bool GetFlag()
+    {
+        return pauseFlag;
+    }
 }

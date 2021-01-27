@@ -16,9 +16,6 @@ public class GameDirector : MonoBehaviour
     // タイマー
     [SerializeField]
     Timer timerObj;
-    // ゴールテキスト
-    [SerializeField]
-    GameObject goalText;
     // ゲーム始まる
     bool gameStart = false;
     // カウントダウン開始
@@ -43,7 +40,7 @@ public class GameDirector : MonoBehaviour
         // ゴールになったら
         if(goalObj.GetGoalFlag())
         {
-            goalText.SetActive(true);
+            
         }
         if (gameStart)
         {

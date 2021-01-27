@@ -5,10 +5,11 @@ using UnityEngine.UI;
 public class Timer : MonoBehaviour
 {
 
-    [SerializeField]
-    private int minute;
-    [SerializeField]
-    private float seconds;
+
+    public static int minute = 0;
+
+    public static float seconds = 0.0f;
+
     //　前のUpdateの時の秒数
     private float oldSeconds;
     //　タイマー表示用テキスト
@@ -17,10 +18,12 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private ObjectGenerator load;
 
+    [SerializeField]
+    Goal goal;
+
     void Start()
     {
-        minute = 0;
-        seconds = 0.0f;
+       
         oldSeconds = 0.0f;
         timerText = GetComponentInChildren<Text>();
     }
@@ -29,11 +32,16 @@ public class Timer : MonoBehaviour
     {
         if (load.GetStageLoad())
         {
-            seconds += Time.deltaTime;
-            if (seconds >= 60.0f)
+
+            if (goal.GetGoalFlag()==false)
             {
-                minute++;
-                seconds = seconds - 60.0f;
+
+                seconds += Time.deltaTime;
+                if (seconds >= 60.0f)
+                {
+                    minute++;
+                    seconds = seconds - 60.0f;
+                }
             }
             //　値が変わった時だけテキストUIを更新
             if ((int)seconds != (int)oldSeconds)
@@ -42,5 +50,15 @@ public class Timer : MonoBehaviour
             }
             oldSeconds = seconds;
         }
+    }
+
+    public static float GetSecond()
+    {
+        return seconds;
+    }
+
+    public static int GetMinute()
+    {
+        return minute;
     }
 }
