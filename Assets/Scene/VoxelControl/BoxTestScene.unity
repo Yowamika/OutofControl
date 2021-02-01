@@ -240,7 +240,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 311514633}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 500, y: 1, z: 500}
   m_Children: []
   m_Father: {fileID: 0}
@@ -589,7 +589,7 @@ MonoBehaviour:
   objectPrefab: {fileID: 2901210351014153015, guid: 5c820559cabd1e64d84c1a3feb22e3a2,
     type: 3}
   bedlock: {fileID: 311514637}
-  stagename: StageMaster.csv
+  stagename: LastMasterFinal.csv
   cubeList: []
   cubeMatList: 
   objList:
@@ -602,9 +602,18 @@ MonoBehaviour:
     - {fileID: 1061899807350035788, guid: a5954f20715a8b94babfabdbaae8dba3, type: 3}
     - {fileID: 5018163948094673543, guid: 09bcf377a9821f443a90d3da242f8cbd, type: 3}
   stampList:
-  - {fileID: 1224449384244753782, guid: 5a244e670025a0d46937c01586185f3d, type: 3}
-  - {fileID: 3612509998283549529, guid: 1d9368bb4f2948143bf8a447584b8133, type: 3}
-  - {fileID: 5284477316812131434, guid: a0c5ad8a60c68bb459562957871576e7, type: 3}
+  - {fileID: 8743386107196319665, guid: 1d9368bb4f2948143bf8a447584b8133, type: 3}
+  - {fileID: 575198394193194476, guid: 5a244e670025a0d46937c01586185f3d, type: 3}
+  - {fileID: 6046804697947635153, guid: a0c5ad8a60c68bb459562957871576e7, type: 3}
+  - {fileID: 5010558995092185024, guid: d7b61e3fc23c26d4b812074c5b7d27d7, type: 3}
+  - {fileID: 6019907546272848386, guid: e8d9699138be7de43af9b593e52f7824, type: 3}
+  - {fileID: 7447491238715717422, guid: 2b23840ad5fa60b4282173f6e4f485b5, type: 3}
+  - {fileID: 7443940587857098871, guid: 3291550f4b2a3f348bdbb1eff1c57f58, type: 3}
+  - {fileID: 5662050654537845576, guid: 3d2aae2c171c45c43a94556cfb7f6e13, type: 3}
+  - {fileID: 7705492218128687908, guid: 4eb1af8e467f4a2448e2690640a808c7, type: 3}
+  - {fileID: 293207381011655124, guid: cd7235cc198dfcd499a1aa66db1b22b3, type: 3}
+  - {fileID: 2928121304036487611, guid: 0ec322035da504542abeacd1785ea6ef, type: 3}
+  - {fileID: 4067947206617121947, guid: ddd66023afcac144f9e3db6636e42c15, type: 3}
   car: {fileID: 169698162}
   goal: {fileID: 1843979948}
   loadMaterialStr:
