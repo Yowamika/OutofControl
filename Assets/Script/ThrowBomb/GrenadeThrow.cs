@@ -36,7 +36,7 @@ public class GrenadeThrow : MonoBehaviour
     AudioSource audioSource;
 
     [SerializeField]
-    AudioClip[] clip;
+    AudioClip clip;
 
     // ロード
     [SerializeField]
@@ -44,17 +44,6 @@ public class GrenadeThrow : MonoBehaviour
     // ポーズマネージャー
     [SerializeField]
     PauseManager pauseM;
-
-    // 点滅フラグ
-    bool isBlink=false;
-
-    // 復活フラグ
-    bool isRevival = false;
-
-    // 使用後フラグ
-    bool isBombed = false;
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -71,7 +60,8 @@ public class GrenadeThrow : MonoBehaviour
             if (Camera.main != null)
             {
                 Pos = PosParent.transform.position;
-                Pos = new Vector3(Pos.x, Pos.y + 3f, Pos.z); // グレの位置を車両の近くに設定           
+                Pos = new Vector3(Pos.x, Pos.y + 3f, Pos.z); // グレの位置を車両の近くに設定
+
 
                 cameraPos = Camera.main.transform.position; // カメラの位置
 
@@ -84,8 +74,6 @@ public class GrenadeThrow : MonoBehaviour
 
                 throwDirection.y += 2.0f; // グレの飛ぶ高さを指定
 
-                
-
                 // インターバルをしっかりとつけていくぅ
                 if (BombStock != 0 && countDown.GetCountEnd())
                 {
@@ -93,43 +81,32 @@ public class GrenadeThrow : MonoBehaviour
                     {
                         rb_ball = Instantiate(ball, Pos, transform.rotation).GetComponent<Rigidbody>(); // 玉を生成
                         rb_ball.transform.parent = PosParent.transform; // 車両をグレネードの親に設定
-
-                        // 点滅フラグをONにする
-                        isBlink = true;
                     }
                     if (Input.GetMouseButtonUp(0))
                     {
 
-                        // 点滅フラグをOFFにする
-                        isBlink = false;
-
-                       
-                       
                         BombStock--;
 
                         if (rb_ball != null)
                         {
                             rb_ball.isKinematic = false;
                             rb_ball.AddForce(throwDirection + carRigid.velocity, ForceMode.Impulse); // カーソルの方向に力を一度加える
-                            audioSource.PlayOneShot(clip[0]);
+                            audioSource.PlayOneShot(clip);
                             //GrenadeScript grenade = rb_ball.GetComponent<GrenadeScript>(); // 爆発するスクリプトの取得
                             //grenade.enabled = true; // 爆発スクリプトをアクティブに変更    
                         }
                     }
 
                 }
-
-
                 if (BOMBMAX > BombStock)
                 {
                     if (count >= INTERVAL)
                     {
-                        BombStock++;                   
-                        audioSource.PlayOneShot(clip[1]);
+                        BombStock++;
                         count = 0f;
                     }
                 }
-     
+
 
                 count += Time.deltaTime;
                 //Debug.Log(BombStock);
@@ -142,11 +119,6 @@ public class GrenadeThrow : MonoBehaviour
     {
         return BombStock;
     }
-
-    public bool GetIsBlink()
-    {
-        return isBlink;
-    }
     
-
+   
 }
