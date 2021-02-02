@@ -25,7 +25,6 @@ public class CountManager : MonoBehaviour
     {
         // 爆弾のカウントを格納
         int count = bomb.Count();
-
         // パネルのライフに反映
         bombPanel.UpdateLife(count);
     }
