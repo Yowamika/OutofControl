@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
 
     public Transform target;
 
-    private const float distance = 5.2f;
+    private const float distance = 10.2f;
     private Vector3 offset = new Vector3(0f, 0f, -distance);
     private Vector3 lookDown = new Vector3(10f, 0f, 0f);
     private const float followRate = 0.1f;

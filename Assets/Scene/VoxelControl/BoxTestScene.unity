@@ -402,7 +402,7 @@ MonoBehaviour:
   objectPrefab: {fileID: 2901210351014153015, guid: 5c820559cabd1e64d84c1a3feb22e3a2,
     type: 3}
   bedlock: {fileID: 311514637}
-  stagename: LastMasterFinal.csv
+  stagename: poster.csv
   cubeList: []
   cubeMatList: 
   objList:
@@ -964,6 +964,16 @@ PrefabInstance:
       propertyPath: fade
       value: 
       objectReference: {fileID: 1789500120}
+    - target: {fileID: 8357121054032702236, guid: 53709cc3738d48d48a50461bbbae8cc7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357121054032702236, guid: 53709cc3738d48d48a50461bbbae8cc7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.49
+      objectReference: {fileID: 0}
     - target: {fileID: 8357121054680243360, guid: 53709cc3738d48d48a50461bbbae8cc7,
         type: 3}
       propertyPath: count
@@ -1162,7 +1172,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1843979949
 BoxCollider:
   m_ObjectHideFlags: 0

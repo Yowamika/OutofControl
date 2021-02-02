@@ -63,7 +63,7 @@ public class CountDown : MonoBehaviour
 
             if (time > 5.0f)
             {
-                Destroy(this);
+                Destroy(this.gameObject);
                 Destroy(child);
             }
         }

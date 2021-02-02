@@ -41,7 +41,7 @@ public class DrawLine : MonoBehaviour
     Vector3 throwDirection;
 
     Vector3 Pos;
-    private float GreHight = 2f; 
+    private float GreHight = 2.5f; 
 
 
     private List<GameObject> dummySphereList = new List<GameObject>();

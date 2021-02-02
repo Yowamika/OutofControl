@@ -86,7 +86,7 @@ public class GrenadeThrow : MonoBehaviour
 
                 
 
-                // インターバルをしっかりとつけていくぅ
+                // インターバルをつける
                 if (BombStock != 0 && countDown.GetCountEnd())
                 {
                     if (Input.GetMouseButtonDown(0)) // マウスの左クリックを押したとき
@@ -110,8 +110,6 @@ public class GrenadeThrow : MonoBehaviour
                             rb_ball.isKinematic = false;
                             rb_ball.AddForce(throwDirection + carRigid.velocity, ForceMode.Impulse); // カーソルの方向に力を一度加える
                             audioSource.PlayOneShot(clip[0]);
-                            //GrenadeScript grenade = rb_ball.GetComponent<GrenadeScript>(); // 爆発するスクリプトの取得
-                            //grenade.enabled = true; // 爆発スクリプトをアクティブに変更    
                         }
                     }
 
