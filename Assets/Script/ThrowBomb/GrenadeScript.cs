@@ -33,6 +33,7 @@ public class GrenadeScript : MonoBehaviour
             GameObject root = null;
             // collisionは親
             root = collision.transform.gameObject;
+            Debug.Log("元気？");
             
             // ディレクターから範囲内のオブジェクトを取得する
             Cube[] cubes = generator.GetCubeInRange(3.0f, this.transform.position);
