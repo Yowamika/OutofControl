@@ -71,7 +71,7 @@ public class GrenadeThrow : MonoBehaviour
             if (Camera.main != null)
             {
                 Pos = PosParent.transform.position;
-                Pos = new Vector3(Pos.x, Pos.y + 3f, Pos.z); // グレの位置を車両の近くに設定           
+                Pos = new Vector3(Pos.x, Pos.y + 4.5f, Pos.z); // グレの位置を車両の近くに設定           
 
                 cameraPos = Camera.main.transform.position; // カメラの位置
 
@@ -103,8 +103,6 @@ public class GrenadeThrow : MonoBehaviour
                         // 点滅フラグをOFFにする
                         isBlink = false;
 
-                       
-                       
                         BombStock--;
 
                         if (rb_ball != null)

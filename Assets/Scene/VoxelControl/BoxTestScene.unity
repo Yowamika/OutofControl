@@ -402,7 +402,7 @@ MonoBehaviour:
   objectPrefab: {fileID: 2901210351014153015, guid: 5c820559cabd1e64d84c1a3feb22e3a2,
     type: 3}
   bedlock: {fileID: 311514637}
-  stagename: Kakashi.csv
+  stagename: LastMasterFinal.csv
   cubeList: []
   cubeMatList: 
   objList:
@@ -909,11 +909,29 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2338882236494589419, guid: b4c6c3f5c3e9b5646822645b650c12ac,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: be8a262e871dca344a1b89ec26516b1a,
+        type: 3}
+    - target: {fileID: 3469460128100152365, guid: b4c6c3f5c3e9b5646822645b650c12ac,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: be8a262e871dca344a1b89ec26516b1a,
+        type: 3}
     - target: {fileID: 4717698788812742309, guid: b4c6c3f5c3e9b5646822645b650c12ac,
         type: 3}
       propertyPath: m_Name
       value: BombPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 4974195147712146825, guid: b4c6c3f5c3e9b5646822645b650c12ac,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: be8a262e871dca344a1b89ec26516b1a,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b4c6c3f5c3e9b5646822645b650c12ac, type: 3}
 --- !u!1 &1495554636 stripped
@@ -951,6 +969,11 @@ PrefabInstance:
       propertyPath: count
       value: 
       objectReference: {fileID: 4918694377114716500}
+    - target: {fileID: 8357121054680243360, guid: 53709cc3738d48d48a50461bbbae8cc7,
+        type: 3}
+      propertyPath: carSetting.shiftUpRPM
+      value: 8000
+      objectReference: {fileID: 0}
     - target: {fileID: 8357121054686828888, guid: 53709cc3738d48d48a50461bbbae8cc7,
         type: 3}
       propertyPath: m_Name
@@ -1021,6 +1044,12 @@ PrefabInstance:
       propertyPath: pauseM
       value: 
       objectReference: {fileID: 5936081300030135000}
+    - target: {fileID: 8357121055589214189, guid: 53709cc3738d48d48a50461bbbae8cc7,
+        type: 3}
+      propertyPath: ball
+      value: 
+      objectReference: {fileID: 469861816709874319, guid: 85ac8a3d7e4ec4140a1ab11951037d7d,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53709cc3738d48d48a50461bbbae8cc7, type: 3}
 --- !u!1 &1757401420 stripped
