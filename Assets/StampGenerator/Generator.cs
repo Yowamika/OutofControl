@@ -99,8 +99,6 @@ public class Generator : MonoBehaviour
                 List<GameObject> ChildObject = new List<GameObject>();
                 // 親となるオブジェクト
                 GameObject parentObj = new GameObject();
-                // タグを"Object"とする
-                parentObj.tag = "Object";
                 foreach(var d in dataList)
                 {
                     // データをもとにオブジェクトを生成

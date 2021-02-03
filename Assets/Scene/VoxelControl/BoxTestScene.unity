@@ -396,7 +396,7 @@ MonoBehaviour:
   objectPrefab: {fileID: 2901210351014153015, guid: 5c820559cabd1e64d84c1a3feb22e3a2,
     type: 3}
   bedlock: {fileID: 311514637}
-  stagename: poster.csv
+  stagename: LastMasterFinal.csv
   cubeList: []
   cubeMatList: 
   objList:
@@ -409,18 +409,24 @@ MonoBehaviour:
     - {fileID: 1061899807350035788, guid: a5954f20715a8b94babfabdbaae8dba3, type: 3}
     - {fileID: 5018163948094673543, guid: 09bcf377a9821f443a90d3da242f8cbd, type: 3}
   stampList:
-  - {fileID: 4005208088829152116, guid: d7b61e3fc23c26d4b812074c5b7d27d7, type: 3}
-  - {fileID: 7897093205699148486, guid: e8d9699138be7de43af9b593e52f7824, type: 3}
-  - {fileID: 9014768934193366375, guid: 5a244e670025a0d46937c01586185f3d, type: 3}
-  - {fileID: 5535254467344263916, guid: 2b23840ad5fa60b4282173f6e4f485b5, type: 3}
-  - {fileID: 631835848719952316, guid: 3291550f4b2a3f348bdbb1eff1c57f58, type: 3}
-  - {fileID: 339334216258353409, guid: 3d2aae2c171c45c43a94556cfb7f6e13, type: 3}
-  - {fileID: 5536958687657060244, guid: 4eb1af8e467f4a2448e2690640a808c7, type: 3}
-  - {fileID: 6393483720244161005, guid: cd7235cc198dfcd499a1aa66db1b22b3, type: 3}
-  - {fileID: 8309507401170028638, guid: 0ec322035da504542abeacd1785ea6ef, type: 3}
-  - {fileID: 5164254607872842726, guid: ddd66023afcac144f9e3db6636e42c15, type: 3}
-  - {fileID: 6285994544191178129, guid: 1d9368bb4f2948143bf8a447584b8133, type: 3}
-  - {fileID: 1305962286745633936, guid: a0c5ad8a60c68bb459562957871576e7, type: 3}
+  - {fileID: 5515779848733282188, guid: 54ce4e2688f83ce4f8636367f94a62dc, type: 3}
+  - {fileID: 761922545749208639, guid: 18f1c92b486c905489cb166b164c18e6, type: 3}
+  - {fileID: 5541398470718653149, guid: ab8e90a969a69e441aa3831515e3cefd, type: 3}
+  - {fileID: 9216125818173021926, guid: ff5213c63558bea4ca76ce96f2da9f4c, type: 3}
+  - {fileID: 4911813328892016592, guid: d7b61e3fc23c26d4b812074c5b7d27d7, type: 3}
+  - {fileID: 4726166819472233301, guid: e8d9699138be7de43af9b593e52f7824, type: 3}
+  - {fileID: 7147785313329239443, guid: 5a244e670025a0d46937c01586185f3d, type: 3}
+  - {fileID: 7982450183293954813, guid: 2b23840ad5fa60b4282173f6e4f485b5, type: 3}
+  - {fileID: 1672834386507175020, guid: 3291550f4b2a3f348bdbb1eff1c57f58, type: 3}
+  - {fileID: 4952268094962335740, guid: 3d2aae2c171c45c43a94556cfb7f6e13, type: 3}
+  - {fileID: 3884822292521926637, guid: 4eb1af8e467f4a2448e2690640a808c7, type: 3}
+  - {fileID: 1556559522723256882, guid: cd7235cc198dfcd499a1aa66db1b22b3, type: 3}
+  - {fileID: 7295732097334151911, guid: 171c2e40e7030834ca62ec6ef604e9f7, type: 3}
+  - {fileID: 3631624265698227465, guid: abac80a5ae1412b42a1ff97c4dc5d9b9, type: 3}
+  - {fileID: 6578949825636725658, guid: 0ec322035da504542abeacd1785ea6ef, type: 3}
+  - {fileID: 2229400943339412885, guid: ddd66023afcac144f9e3db6636e42c15, type: 3}
+  - {fileID: 239635647078140583, guid: 1d9368bb4f2948143bf8a447584b8133, type: 3}
+  - {fileID: 8340294502983630490, guid: a0c5ad8a60c68bb459562957871576e7, type: 3}
   car: {fileID: 8357121054151014556}
   goal: {fileID: 1843979948}
   loadMaterialStr:
@@ -920,6 +926,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: be8a262e871dca344a1b89ec26516b1a,
         type: 3}
+    - target: {fileID: 8536999493076945246, guid: b4c6c3f5c3e9b5646822645b650c12ac,
+        type: 3}
+      propertyPath: car
+      value: 
+      objectReference: {fileID: 8357121054151014556}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b4c6c3f5c3e9b5646822645b650c12ac, type: 3}
 --- !u!114 &1554313444 stripped
@@ -1044,7 +1055,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &1843979949
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2955,6 +2966,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 285713110903857911, guid: 310afa8e71eaaf74ba07f097c131f441,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 285713110903857911, guid: 310afa8e71eaaf74ba07f097c131f441,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 285713110903857911, guid: 310afa8e71eaaf74ba07f097c131f441,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 285713110904193609, guid: 310afa8e71eaaf74ba07f097c131f441,
         type: 3}
