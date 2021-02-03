@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8468777091345945355}
   - component: {fileID: 2244924424322626069}
   - component: {fileID: 4653861872431023874}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: CubePrefab
   m_TagString: Block
   m_Icon: {fileID: 0}
