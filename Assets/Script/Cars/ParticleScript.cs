@@ -10,7 +10,8 @@ public class ParticleScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Object") || collision.gameObject.CompareTag("Block") || collision.gameObject.CompareTag("Fragment")) //Objectタグの付いたゲームオブジェクトと衝突したか判別
         {
-            Instantiate(explosion, this.transform.position, Quaternion.identity); //パーティクル用ゲームオブジェクト生成
+            ParticleSystem exp = Instantiate(explosion, this.transform.position, Quaternion.identity); //パーティクル用ゲームオブジェクト生成
+            Destroy(exp, 4f);
             Destroy(this.gameObject); //衝突したゲームオブジェクトを削除
         }
     }

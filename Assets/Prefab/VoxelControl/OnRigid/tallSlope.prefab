@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6819828579538662226}
   - component: {fileID: 6956919399380595638}
   - component: {fileID: -4977134850726288864}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: tallSlope
-  m_TagString: Untagged
+  m_TagString: Fragment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

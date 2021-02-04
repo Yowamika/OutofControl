@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 1566228267248661657}
   - component: {fileID: 9097212610618892167}
   - component: {fileID: 4460149513289768540}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: shortSlope
-  m_TagString: Untagged
+  m_TagString: Fragment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
