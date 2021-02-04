@@ -132,6 +132,8 @@ public class ObjectGenerator : MonoBehaviour
     Slider slider;
     // ジェネレートカウント用
     int gene_count = 0;
+    // ディレクター
+    GameDirector director;
 
     // ---------------------------------------------------
     // 初期化処理
@@ -153,6 +155,8 @@ public class ObjectGenerator : MonoBehaviour
         {
             stampNameList.Add(v.name);
         }
+        // ディレクター取得
+        director = this.GetComponent<GameDirector>();
     }
     // ---------------------------------------------------
     // スタート関数
@@ -251,8 +255,9 @@ public class ObjectGenerator : MonoBehaviour
         // ステージ構成
         if (dataInt[(int)BoxDataType.OBJECT] == (int)ObjectType.STAGE)
         {
+            int num = dataInt[(int)BoxDataType.MATERIAL];
             // ステージ構成オブジェクトはマテリアルで判別
-            switch(dataInt[(int)BoxDataType.MATERIAL])
+            switch (num)
             {
                 // スタート位置
                 case 1:
@@ -265,7 +270,12 @@ public class ObjectGenerator : MonoBehaviour
                 // それ以外はチェックポイント
                 default:
                     // チェックポイントを生成
-                    GameObject check = Instantiate(checkPoint, v, Quaternion.identity);
+                    CheckPoint check = Instantiate(checkPoint, v, Quaternion.identity).GetComponent<CheckPoint>();
+                    // チェックポイントは3以上から始まるので-3で1からカウントして設定する
+                    int cpnum = num - 3;
+                    check.SetCheckPointNumber(cpnum);
+                    // チェックポイントの最大値を設定する
+                    director.SetMaxCheckPoint(cpnum + 1);
                     break;
             }
         }
@@ -479,6 +489,7 @@ public class ObjectGenerator : MonoBehaviour
             }
             i++;
         }
+        director.SetGameStart();
         isStageLoaded = true;
         loadUI.SetActive(false);
         yield break;
