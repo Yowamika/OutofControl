@@ -17,6 +17,11 @@ public class CountDown : MonoBehaviour
     [SerializeField]
     AudioClip[] se;
 
+    // 背景音楽
+    [SerializeField]
+    AudioClip bgm;
+    // 
+    bool isStart = false;
 
     // 子オブジェクトを見つける
     GameObject child;
@@ -47,24 +52,30 @@ public class CountDown : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (load.GetStageLoad())
+        if (!isStart)
         {
-            time += Time.deltaTime;
-
-            child.SetActive(true);
-            GetComponent<Animator>().SetTrigger("CountDownTrigger");
-        }
-
-        if(time>3.5f)
-        {
-            isEnd = true;
-            this.transform.Rotate(0.0f, 0.0f, 15.0f);
-            this.transform.localScale += new Vector3(-0.1f, -0.1f, -0.1f);
-
-            if (time > 5.0f)
+            if (load.GetStageLoad())
             {
-                Destroy(this.gameObject);
-                Destroy(child);
+                time += Time.deltaTime;
+
+                child.SetActive(true);
+                GetComponent<Animator>().SetTrigger("CountDownTrigger");
+            }
+
+            if (time > 3.5f)
+            {
+                isEnd = true;
+                this.transform.Rotate(0.0f, 0.0f, 15.0f);
+                this.transform.localScale += new Vector3(-0.1f, -0.1f, -0.1f);
+
+                if (time > 5.0f)
+                {
+                    //Destroy(this.gameObject);
+                    // BGMを流す
+                    audioSource.PlayOneShot(bgm);
+                    isStart = true;
+                    Destroy(child);
+                }
             }
         }
     }

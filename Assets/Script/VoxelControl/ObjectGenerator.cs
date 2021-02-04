@@ -112,6 +112,9 @@ public class ObjectGenerator : MonoBehaviour
     // ゴールの挙動
     [SerializeField]
     GameObject goal;
+    // チェックポイントのPrefab情報
+    [SerializeField]
+    GameObject checkPoint;
     // 優しい坂以上のアレ
     public const int MULTIPLE_NUM = 8;
     // ステージデータcsvの保存ファイル
@@ -129,6 +132,8 @@ public class ObjectGenerator : MonoBehaviour
     Slider slider;
     // ジェネレートカウント用
     int gene_count = 0;
+    // ディレクター
+    GameDirector director;
 
     // ---------------------------------------------------
     // 初期化処理
@@ -150,6 +155,8 @@ public class ObjectGenerator : MonoBehaviour
         {
             stampNameList.Add(v.name);
         }
+        // ディレクター取得
+        director = this.GetComponent<GameDirector>();
     }
     // ---------------------------------------------------
     // スタート関数
@@ -242,20 +249,34 @@ public class ObjectGenerator : MonoBehaviour
         // マテリアルナンバーを取得
         int m = GetMaterialNumberforMutiple(dataInt[(int)BoxDataType.OBJECT]);
 
-        // 座標を決定(岩盤考慮せず)
+        // 座標を決定
         Vector3 v = new Vector3(dataInt[(int)BoxDataType.POS_X] + (bedlock.position.x + 1), dataInt[(int)BoxDataType.POS_Y] + (bedlock.position.y + 1), dataInt[(int)BoxDataType.POS_Z] + (bedlock.position.z + 1));
 
+        // ステージ構成
         if (dataInt[(int)BoxDataType.OBJECT] == (int)ObjectType.STAGE)
         {
-            // スタート位置
-            if (dataInt[(int)BoxDataType.MATERIAL] == 1)
+            int num = dataInt[(int)BoxDataType.MATERIAL];
+            // ステージ構成オブジェクトはマテリアルで判別
+            switch (num)
             {
-                car.transform.position = v;
-            }
-            // ゴール位置
-            else if (dataInt[(int)BoxDataType.MATERIAL] == 2)
-            {
-                goal.transform.position = v;
+                // スタート位置
+                case 1:
+                    car.transform.position = v;
+                    break;
+                // ゴール位置
+                case 2:
+                    goal.transform.position = v;
+                    break;
+                // それ以外はチェックポイント
+                default:
+                    // チェックポイントを生成
+                    CheckPoint check = Instantiate(checkPoint, v, Quaternion.identity).GetComponent<CheckPoint>();
+                    // チェックポイントは3以上から始まるので-3で1からカウントして設定する
+                    int cpnum = num - 3;
+                    check.SetCheckPointNumber(cpnum);
+                    // チェックポイントの最大値を設定する
+                    director.SetMaxCheckPoint(cpnum + 1);
+                    break;
             }
         }
         else
@@ -468,6 +489,7 @@ public class ObjectGenerator : MonoBehaviour
             }
             i++;
         }
+        director.SetGameStart();
         isStageLoaded = true;
         loadUI.SetActive(false);
         yield break;
