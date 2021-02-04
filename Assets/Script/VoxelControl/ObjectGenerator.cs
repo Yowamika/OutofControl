@@ -313,7 +313,7 @@ public class ObjectGenerator : MonoBehaviour
         }
         else
         {
-            Debug.Log("error:'ObjectGenerator' Stamp not find");
+            Debug.Log("error:'"+ data[(int)StampDataType.STAMPNAME] + "' Stamp not find");
         }
     }
     // ---------------------------------------------------

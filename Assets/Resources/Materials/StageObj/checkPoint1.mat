@@ -56,7 +56,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ToonPointLightTex:
-        m_Texture: {fileID: 2800000, guid: 52d4f70de0d23034c9332a59c8c84a49, type: 3}
+        m_Texture: {fileID: 2800000, guid: cefca8a0a69097e41ba731f63b7afa9a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ToonTex:
