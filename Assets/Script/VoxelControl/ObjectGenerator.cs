@@ -179,10 +179,9 @@ public class ObjectGenerator : MonoBehaviour
     }
 
     // ---------------------------------------------------
-    // 親を元として範囲内にあるCubeを取得する
+    // 全体を元として範囲内にあるCubeを取得する
     // distance 範囲の距離
     // pos      中心点
-    // root     親オブジェクト
     public Cube[] GetCubeInRange(float distance,Vector3 pos)
     {
         // 返り値となる配列
@@ -324,13 +323,13 @@ public class ObjectGenerator : MonoBehaviour
                 new Vector3(float.Parse(data[(int)StampDataType.POS_X]) + 1.0f,
                             float.Parse(data[(int)StampDataType.POS_Y]) + 1.0f,
                             float.Parse(data[(int)StampDataType.POS_Z]) + 1.0f), rot);
-            for(int i = 0; i < stampObject.transform.childCount;i++)
+            if (data[(int)StampDataType.STAMPNAME] != "Kabe" && data[(int)StampDataType.STAMPNAME] != "Kabe2")
             {
-                cubeList.Add(stampObject.transform.GetChild(i).GetComponent<Cube>());
+                for (int i = 0; i < stampObject.transform.childCount; i++)
+                {
+                    cubeList.Add(stampObject.transform.GetChild(i).GetComponent<Cube>());
+                }
             }
-            
-            
-
         }
         else
         {
@@ -445,6 +444,10 @@ public class ObjectGenerator : MonoBehaviour
             Debug.Log("error:cubeHolder.GetMaterialMultipleNum()");
             return 0;
         }
+    }
+    IEnumerator Stamp(string[] data)
+    {
+        yield return null;
     }
     // ---------------------------------------------------------------------------
     // ステージロード中画面コルーチン

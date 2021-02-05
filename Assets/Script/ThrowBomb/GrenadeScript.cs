@@ -32,11 +32,15 @@ public class GrenadeScript : MonoBehaviour
         {
             GameObject root = null;
             // collisionは親
-            root = collision.transform.gameObject;
+            root = collision.transform.parent.gameObject;
             
             // ディレクターから範囲内のオブジェクトを取得する
             Cube[] cubes = generator.GetCubeInRange(4.5f, this.transform.position);
             
+            foreach(Cube c in cubes)
+            {
+                Debug.Log(c);
+            }
             // もらったオブジェクトを爆発させる
             foreach (var c in cubes)
             {
