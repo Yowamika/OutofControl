@@ -37,7 +37,7 @@ public class GameDirector : MonoBehaviour
         audioSource = this.GetComponent<AudioSource>();
         // ゴールオブジェクトを非表示にする
         goalObj.gameObject.SetActive(false);
-        
+        goalObj.GetComponent<CheckPointSeener>().GetTargetImage().SetActive(false);
     }
 
     // Update is called once per frame
@@ -49,6 +49,7 @@ public class GameDirector : MonoBehaviour
             if (checkPointStatus >= maxCheckPoint)
             {
                 goalObj.gameObject.SetActive(true);
+                goalObj.GetComponent<CheckPointSeener>().GetTargetImage().SetActive(true);
             }
         }
     }
