@@ -163,6 +163,7 @@ public class ObjectGenerator : MonoBehaviour
         // 親オブジェクトの最適化（よくわかってない）
         StampRoot.hierarchyCapacity = 1000;
         parentObject.hierarchyCapacity = 1000;
+        car.GetComponent<Rigidbody>().isKinematic = true;
     }
     // ---------------------------------------------------
     // スタート関数
@@ -174,6 +175,7 @@ public class ObjectGenerator : MonoBehaviour
         //GenerateBox();
         // コルーチン開始
         StartCoroutine("LoadStage");
+       
     }
     // 更新関数
     private void Update()
@@ -328,14 +330,10 @@ public class ObjectGenerator : MonoBehaviour
                 new Vector3(float.Parse(data[(int)StampDataType.POS_X]) + 1.0f,
                             float.Parse(data[(int)StampDataType.POS_Y]) + 1.0f,
                             float.Parse(data[(int)StampDataType.POS_Z]) + 1.0f), rot,StampRoot);
-
             //// Cubeリストに追加
             if (data[(int)StampDataType.STAMPNAME] != "Kabe" && data[(int)StampDataType.STAMPNAME] != "Kabe2")
             {
-                foreach (Transform child in stampObject.transform)
-                {
-                    cubeList.Add(child.GetComponent<Cube>());
-                }
+                cubeList.AddRange(stampObject.GetComponentsInChildren<Cube>());
             }
         }
         else
@@ -493,6 +491,7 @@ public class ObjectGenerator : MonoBehaviour
             }
             i++;
         }
+        car.GetComponent<Rigidbody>().isKinematic = false;
         director.SetGameStart();
         isStageLoaded = true;
         loadUI.SetActive(false);

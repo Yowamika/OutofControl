@@ -21,7 +21,7 @@ public class CheckPointSeener : MonoBehaviour
     RectTransform rectTransform = null;
 
     public Sprite flagImage;
-
+    Transform parent;
 
     // Start is called before the first frame update
     void Start()

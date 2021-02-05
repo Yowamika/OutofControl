@@ -22,7 +22,7 @@ public class MoveResult : MonoBehaviour
         time += Time.deltaTime;
 
        
-        if (time <= 1.5f)
+        if (time <= 1.0f)
         {
             this.transform.Translate(0.0f, -4.0f, 0.0f);
             

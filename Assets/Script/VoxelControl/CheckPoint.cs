@@ -55,6 +55,10 @@ public class CheckPoint : MonoBehaviour
             }
         }
     }
+    public int GetCheckPointNumber()
+    {
+        return checkPointNumber;
+    }
     /// <summary>
     /// チェックポイントナンバーを設定する
     /// </summary>

@@ -24,12 +24,11 @@ public class GameDirector : MonoBehaviour
     // チェックポイント通過状況
     int checkPointStatus = 0;
     
-    [SerializeField]
-    AudioClip countdown;
-    [SerializeField]
-    AudioClip bgm;
 
+    // チェックポイント情報
+    List<CheckPoint> checkpointList = new List<CheckPoint>();
     AudioSource audioSource;
+    
     
     // Start is called before the first frame update
     void Start()
@@ -49,13 +48,34 @@ public class GameDirector : MonoBehaviour
             if (checkPointStatus >= maxCheckPoint)
             {
                 goalObj.gameObject.SetActive(true);
-                goalObj.GetComponent<CheckPointSeener>().GetTargetImage().SetActive(true);
             }
         }
     }
     public void SetGameStart()
     {
         gameStart = true;
+        GameObject[] gos = GameObject.FindGameObjectsWithTag("CheckPoint");
+        foreach (var g in gos)
+        { 
+            CheckPoint cp = g.GetComponent<CheckPoint>();
+            checkpointList.Add(cp);
+            cp.gameObject.SetActive(false);
+        }
+        // チェックポイント確認
+        CheckCheckPointVisable();
+    }
+    /// <summary>
+    /// 今存在すべきチェックポイントはどれか確認
+    /// </summary>
+    void CheckCheckPointVisable()
+    {
+        foreach(CheckPoint cp in checkpointList)
+        {
+            if(cp.GetCheckPointNumber() == checkPointStatus)
+            {
+                cp.gameObject.SetActive(true);
+            }
+        }
     }
     /// <summary>
     /// チェックポイントの最大値を設定する
@@ -77,6 +97,9 @@ public class GameDirector : MonoBehaviour
         {
             // 通過状況を更新する
             checkPointStatus++;
+            if(maxCheckPoint != checkPointStatus)
+                CheckCheckPointVisable();
+
             return true;
         }
         return false;

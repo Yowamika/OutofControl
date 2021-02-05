@@ -73,6 +73,8 @@ public class CountDown : MonoBehaviour
                     //Destroy(this.gameObject);
                     // BGMを流す
                     audioSource.PlayOneShot(bgm);
+                    // ループを適用
+                    audioSource.loop = true;
                     isStart = true;
                     Destroy(child);
                 }
@@ -83,5 +85,9 @@ public class CountDown : MonoBehaviour
     public bool GetCountEnd()
     {
         return isEnd;
+    }
+    public bool GetGameStart()
+    {
+        return isStart;
     }
 }

@@ -35,7 +35,7 @@ public class ResultTime : MonoBehaviour
 
         resultText.text = minute.ToString("00") + ":" + ((int)second).ToString("00");
 
-        if (time <= 2.0f&& result.GetEnd())
+        if (time <= 1.0f&& result.GetEnd())
         {
             this.transform.Translate(-12.0f, 0.0f, 0.0f);
         }

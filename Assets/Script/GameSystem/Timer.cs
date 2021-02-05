@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-
-
+    [SerializeField]
+    CountDown countDown;
     public static int minute = 0;
 
     public static float seconds = 0.0f;
@@ -23,32 +23,36 @@ public class Timer : MonoBehaviour
 
     void Start()
     {
-       
+        minute = 0;
+        seconds = 0.0f;
         oldSeconds = 0.0f;
         timerText = GetComponentInChildren<Text>();
     }
 
     void Update()
     {
-        if (load.GetStageLoad())
+        if(countDown.GetGameStart())
         {
-
-            if (goal.GetGoalFlag()==false)
+            if (load.GetStageLoad())
             {
 
-                seconds += Time.deltaTime;
-                if (seconds >= 60.0f)
+                if (goal.GetGoalFlag() == false)
                 {
-                    minute++;
-                    seconds = seconds - 60.0f;
+
+                    seconds += Time.deltaTime;
+                    if (seconds >= 60.0f)
+                    {
+                        minute++;
+                        seconds = seconds - 60.0f;
+                    }
                 }
+                //　値が変わった時だけテキストUIを更新
+                if ((int)seconds != (int)oldSeconds)
+                {
+                    timerText.text = minute.ToString("00") + ":" + ((int)seconds).ToString("00");
+                }
+                oldSeconds = seconds;
             }
-            //　値が変わった時だけテキストUIを更新
-            if ((int)seconds != (int)oldSeconds)
-            {
-                timerText.text = minute.ToString("00") + ":" + ((int)seconds).ToString("00");
-            }
-            oldSeconds = seconds;
         }
     }
 

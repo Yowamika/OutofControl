@@ -42,7 +42,6 @@ public class Goal : MonoBehaviour
             GoalHit = true;
             
             FadeManager.Instance.LoadScene("ResultScene", 1.0f);
-            Debug.Log("ゴール");
 
             //ゴールしたらファンファーレ
             audioSource.PlayOneShot(sound);
