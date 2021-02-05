@@ -29,32 +29,30 @@ public class BombsCount : MonoBehaviour
 
     public void UpdateLife(int life)
     {
-        for(int i = 0; i < 3;i++)
+        if(0 < life)
         {
-            // 未使用
-            images[i].color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+            for (int i = 0; i < 3; i++)
+            {
+                // 未使用
+                images[i].color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
 
-            // 使用後は灰色ボムに
-            if (i+1 > life)
-                images[i].color = new Color(0.0f, 0.0f, 0.0f, 0.25f);
+                // 使用後は灰色ボムに
+                if (i + 1 > life)
+                    images[i].color = new Color(0.0f, 0.0f, 0.0f, 0.25f);
                 images[i].transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
-            // 点滅フラグが立ったら点滅ボムに
-            if (bomb.GetIsBlink())
-            {
-                time += Time.deltaTime * 5.0f * speed;
-                images[life-1].color = new Color(0.0f, 0.0f, 0.0f, Mathf.Sin(time) * 0.5f + 0.5f);
+                // 点滅フラグが立ったら点滅ボムに
+                if (bomb.GetIsBlink())
+                {
+                    time += Time.deltaTime * 5.0f * speed;
+                    images[life - 1].color = new Color(0.0f, 0.0f, 0.0f, Mathf.Sin(time) * 0.5f + 0.5f);
 
-                images[life - 1].transform.localScale = new Vector3(EXPANSION, EXPANSION, 1.0f);
+                    images[life - 1].transform.localScale = new Vector3(EXPANSION, EXPANSION, 1.0f);
+                }
+                else
+                    images[life - 1].transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             }
-            else
-                images[life - 1].transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         }
-
-
-        
-    
-      
 
     }
 

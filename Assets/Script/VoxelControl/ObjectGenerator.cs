@@ -149,7 +149,7 @@ public class ObjectGenerator : MonoBehaviour
         // <回転の固定値を設定>
         SetRotationListInit(Application.dataPath + csvInfoFile + "rotationList.csv");
         // ファイルパスを初期化(ビルド後にも対応）
-        filepath = Application.dataPath + csvDataFile + stagename;
+        filepath = Application.dataPath + csvDataFile + stagename + ".csv";
         // スタンプネームリストに追加していく
         foreach(var v in stampList)
         {
@@ -179,10 +179,9 @@ public class ObjectGenerator : MonoBehaviour
     }
 
     // ---------------------------------------------------
-    // 親を元として範囲内にあるCubeを取得する
+    // 全体を元として範囲内にあるCubeを取得する
     // distance 範囲の距離
     // pos      中心点
-    // root     親オブジェクト
     public Cube[] GetCubeInRange(float distance,Vector3 pos)
     {
         // 返り値となる配列
@@ -307,6 +306,7 @@ public class ObjectGenerator : MonoBehaviour
     // ---------------------------------------------------
     // CSVファイルを基にスタンプを生成する
     // data スタンプの文字列情報リスト
+
     void StampGenerate(string[] data)
     {
         // 入ってきたデータの名前をもとにプレファブ生成
@@ -324,13 +324,13 @@ public class ObjectGenerator : MonoBehaviour
                 new Vector3(float.Parse(data[(int)StampDataType.POS_X]) + 1.0f,
                             float.Parse(data[(int)StampDataType.POS_Y]) + 1.0f,
                             float.Parse(data[(int)StampDataType.POS_Z]) + 1.0f), rot);
-            for(int i = 0; i < stampObject.transform.childCount;i++)
+            if (data[(int)StampDataType.STAMPNAME] != "Kabe" && data[(int)StampDataType.STAMPNAME] != "Kabe2")
             {
-                cubeList.Add(stampObject.transform.GetChild(i).GetComponent<Cube>());
+                for (int i = 0; i < stampObject.transform.childCount; i++)
+                {
+                    cubeList.Add(stampObject.transform.GetChild(i).GetComponent<Cube>());
+                }
             }
-            
-            
-
         }
         else
         {
@@ -353,7 +353,6 @@ public class ObjectGenerator : MonoBehaviour
                     GameObject instance = (GameObject)Instantiate(objectPrefab,
                                                                     new Vector3(j, i+2f, k),
                                                                     Quaternion.identity);
-                    //instance.GetComponent<MeshRenderer>().enabled = false;
                     instance.GetComponentInChildren<Renderer>().material = materialList[0][4];
                     objects[i, j, k] = instance.GetComponent<Cube>();
 
@@ -419,7 +418,6 @@ public class ObjectGenerator : MonoBehaviour
     // ---------------------------------------------------------------------------
     // マルチなオブジェクトのマテリアルナンバーを取得
     // num オブジェクトナンバー
-
     int GetMaterialNumberforMutiple(int num)
     {
         if (num < MULTIPLE_NUM)

@@ -396,7 +396,7 @@ MonoBehaviour:
   objectPrefab: {fileID: 2901210351014153015, guid: 5c820559cabd1e64d84c1a3feb22e3a2,
     type: 3}
   bedlock: {fileID: 311514637}
-  stagename: LastMasterFinal.csv
+  stagename: LastMasterFinal
   cubeList: []
   cubeMatList: 
   objList:
@@ -505,7 +505,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 100
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -3043,6 +3043,11 @@ PrefabInstance:
       objectReference: {fileID: 4918694377114716500}
     - target: {fileID: 285713111753899260, guid: 310afa8e71eaaf74ba07f097c131f441,
         type: 3}
+      propertyPath: clip.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 285713111753899260, guid: 310afa8e71eaaf74ba07f097c131f441,
+        type: 3}
       propertyPath: countDown
       value: 
       objectReference: {fileID: 4918694377114716500}
@@ -3051,6 +3056,16 @@ PrefabInstance:
       propertyPath: pauseM
       value: 
       objectReference: {fileID: 5936081300030135000}
+    - target: {fileID: 285713111753899260, guid: 310afa8e71eaaf74ba07f097c131f441,
+        type: 3}
+      propertyPath: clip.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 63ae1d032ac021d41a5df1f5c051da30, type: 3}
+    - target: {fileID: 285713111753899260, guid: 310afa8e71eaaf74ba07f097c131f441,
+        type: 3}
+      propertyPath: clip.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 63b36f2562d03eb48a1967949bafa45d, type: 3}
     - target: {fileID: 1544949654173441588, guid: 310afa8e71eaaf74ba07f097c131f441,
         type: 3}
       propertyPath: fade
