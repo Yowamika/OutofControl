@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4924503406044258381}
   - component: {fileID: 4924503406044258382}
   - component: {fileID: 4924503406044258383}
+  - component: {fileID: 4906130922647020714}
   - component: {fileID: 4924503406044258416}
   - component: {fileID: 4485580323016164861}
   - component: {fileID: 8463709093109164850}
@@ -82,6 +83,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &4906130922647020714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4924503406044258417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce6a9a7a99bd0114383c4c4242ddfe44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 0}
+  wayImage: {fileID: 3128029270954659959, guid: cca770eff205661409ff16516bcc12c4,
+    type: 3}
+  flagImage: {fileID: 21300000, guid: 20e2f0c23beb00849b60cd0b8e562afb, type: 3}
 --- !u!65 &4924503406044258416
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -123,4 +140,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4879f753f48cf6e46a47fa99503d4174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound: {fileID: 8300000, guid: 845edbf8296b6cb4cb986d993ca021df, type: 3}
+  sound: {fileID: 0}

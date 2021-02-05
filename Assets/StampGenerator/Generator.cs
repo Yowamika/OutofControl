@@ -79,7 +79,7 @@ public class Generator : MonoBehaviour
     /// </summary>
     void PrefabGenerate()
     {
-        string path = Application.dataPath + "/VoxelTool/BoxesData/Stamps/";
+        string path = Application.dataPath + "/Resources/Data/csv/Stamp/";
         // フォルダ内のcsvを全て取得
         string[] files = Directory.GetFiles(path, "*.csv", System.IO.SearchOption.AllDirectories);
         // 取得したフォルダを元にPrefabを生成
