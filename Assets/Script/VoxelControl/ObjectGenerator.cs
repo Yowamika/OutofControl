@@ -17,6 +17,9 @@ public class MultipleList
 }
 public class ObjectGenerator : MonoBehaviour
 {
+    // 親オブジェクト
+    [SerializeField]
+    Transform parentObject;
     // でかい立方体を生成する時の必要変数 -------------------------------
     // オブジェクトの縦幅(縦のブロック数)
     [SerializeField]
@@ -27,9 +30,6 @@ public class ObjectGenerator : MonoBehaviour
     // オブジェクトの奥行
     [SerializeField]
     int OBJECT_DEPTH  = 2;
-    // 親オブジェクト
-    [SerializeField]
-    GameObject parentObject;
     // オブジェクト群(三次配列)
     Cube[,,] objects;
     // -----------------------------------------------------------------
@@ -269,7 +269,7 @@ public class ObjectGenerator : MonoBehaviour
                 // それ以外はチェックポイント
                 default:
                     // チェックポイントを生成
-                    CheckPoint check = Instantiate(checkPoint, v, Quaternion.identity).GetComponent<CheckPoint>();
+                    CheckPoint check = Instantiate(checkPoint, v, Quaternion.identity,parentObject).GetComponent<CheckPoint>();
                     // チェックポイントは3以上から始まるので-3で1からカウントして設定する
                     int cpnum = num - 3;
                     check.SetCheckPointNumber(cpnum);
@@ -293,8 +293,6 @@ public class ObjectGenerator : MonoBehaviour
             }
             if (!external)
             {
-                // 大本のオブジェクトを親として設定
-                go.transform.parent = parentObject.transform;
                 // 存在するキューブとして登録
                 cubeList.Add(go.GetComponent<Cube>());
             }
@@ -324,10 +322,11 @@ public class ObjectGenerator : MonoBehaviour
                 new Vector3(float.Parse(data[(int)StampDataType.POS_X]) + 1.0f,
                             float.Parse(data[(int)StampDataType.POS_Y]) + 1.0f,
                             float.Parse(data[(int)StampDataType.POS_Z]) + 1.0f), rot);
-            // Cubeリストに追加
+
+            //// Cubeリストに追加
             if (data[(int)StampDataType.STAMPNAME] != "Kabe" && data[(int)StampDataType.STAMPNAME] != "Kabe2")
             {
-                foreach(Transform child in stampObject.transform)
+                foreach (Transform child in stampObject.transform)
                 {
                     cubeList.Add(child.GetComponent<Cube>());
                 }
@@ -358,7 +357,7 @@ public class ObjectGenerator : MonoBehaviour
                     objects[i, j, k] = instance.GetComponent<Cube>();
 
                     // 親設定
-                    objects[i, j, k].transform.parent = parentObject.transform;
+                    objects[i, j, k].transform.parent = parentObject;
                     // 破片として登録
                     cubeList.Add(objects[i, j, k]);
                 }
@@ -479,7 +478,7 @@ public class ObjectGenerator : MonoBehaviour
                 BlockGenerate(d);
             }
 
-            if (i % 10 == 0)
+            if (i % 5 == 0)
             {
                 float progressVal = (float)i / (float)dataList.Count;
                 slider.value = progressVal;
