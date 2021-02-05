@@ -1206,6 +1206,11 @@ PrefabInstance:
       propertyPath: subCamera
       value: 
       objectReference: {fileID: 7313204073433035979}
+    - target: {fileID: 1514154755778387694, guid: a0baf671fae48394e98caae9d5d60cfb,
+        type: 3}
+      propertyPath: sound
+      value: 
+      objectReference: {fileID: 8300000, guid: 9ec2aa939fd8e9b48b8b7b7cd0544e79, type: 3}
     - target: {fileID: 1514154755778387695, guid: a0baf671fae48394e98caae9d5d60cfb,
         type: 3}
       propertyPath: m_RootOrder
@@ -2560,6 +2565,7 @@ MonoBehaviour:
   pausePanel: {fileID: 1757401420}
   resumeButton: {fileID: 877019224}
   returnButton: {fileID: 5936081299114593451}
+  sound: {fileID: 8300000, guid: ef5d4ccfb3f32aa4f87c03fd1baa5825, type: 3}
 --- !u!1 &5936081300030135002
 GameObject:
   m_ObjectHideFlags: 0

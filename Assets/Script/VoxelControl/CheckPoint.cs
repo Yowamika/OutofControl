@@ -14,11 +14,19 @@ public class CheckPoint : MonoBehaviour
     int checkPointNumber;
     // 削除する時間
     public const float DESTROY_TIME = 5f;
+
+    //チェックポイントの音声
+    public AudioClip sound;
+    AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         // ゲームディレクターを取得
         director = GameObject.Find("Director").GetComponent<GameDirector>();
+
+        //Componentを取得
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -35,8 +43,10 @@ public class CheckPoint : MonoBehaviour
         // 車(プレイヤー)とぶつかった場合
         if (other.gameObject.tag == "Player")
         {
+            //通過したら音声を鳴らす
+            audioSource.PlayOneShot(sound);
             // ディレクターに通過していいか判定してもらう
-            if(director.CheckPointCheck(checkPointNumber))
+            if (director.CheckPointCheck(checkPointNumber))
             {
                 // チェックポイント通過アニメーション開始
 

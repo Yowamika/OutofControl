@@ -12,13 +12,18 @@ public class Goal : MonoBehaviour
 
     float time=0.0f;
 
-
+    //ゴールの音声
+    public AudioClip sound;
+    AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
     {
         //サブカメラを非アクティブにする
         subCamera.SetActive(false);
+
+        //Componentを取得
+        audioSource = GetComponent<AudioSource>();
 
     }
 
@@ -34,12 +39,14 @@ public class Goal : MonoBehaviour
         // プレイヤーに当たったら
         if (collision.gameObject.CompareTag("Player") && !GoalHit)
         {
-           
             GoalHit = true;
+            
             FadeManager.Instance.LoadScene("ResultScene", 1.0f);
             Debug.Log("ゴール");
 
-            
+            //ゴールしたらファンファーレ
+            audioSource.PlayOneShot(sound);
+
             //サブカメラをアクティブに設定
             mainCamera.SetActive(false);
             subCamera.SetActive(true);

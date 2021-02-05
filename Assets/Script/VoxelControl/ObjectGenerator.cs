@@ -478,7 +478,7 @@ public class ObjectGenerator : MonoBehaviour
                 BlockGenerate(d);
             }
 
-            if (i % 5 == 0)
+            if (i % 20 == 0)
             {
                 float progressVal = (float)i / (float)dataList.Count;
                 slider.value = progressVal;

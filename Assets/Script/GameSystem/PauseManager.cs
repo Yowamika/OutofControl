@@ -19,6 +19,10 @@ public class PauseManager : MonoBehaviour
     // 停止のフラグ
     private bool pauseFlag = false;
 
+    //ゴールの音声
+    public AudioClip sound;
+    AudioSource audioSource;
+
     void Start()
     {
         Time.timeScale = 1;  // 再開
@@ -28,6 +32,9 @@ public class PauseManager : MonoBehaviour
         resumeButton.onClick.AddListener(Resume);
         // タイトルに戻るボタンにReturnTitle関数をアタッチ
         returnButton.onClick.AddListener(ReturnTitle);
+
+        //Componentを取得
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -54,12 +61,16 @@ public class PauseManager : MonoBehaviour
     // タイトルに戻る
     private void ReturnTitle()
     {
+        //ボタン押したら音声を鳴らす
+        audioSource.PlayOneShot(sound);
         SceneManager.LoadScene("TitleScene");
         
     }
     // ゲームを再開
     private void Resume()
     {
+        //ボタンを押したら音声を鳴らす
+        audioSource.PlayOneShot(sound);
         Time.timeScale = 1;  // 再開
         pausePanel.SetActive(false);
     }
