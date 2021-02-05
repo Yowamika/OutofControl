@@ -149,7 +149,7 @@ public class ObjectGenerator : MonoBehaviour
         // <回転の固定値を設定>
         SetRotationListInit(Application.dataPath + csvInfoFile + "rotationList.csv");
         // ファイルパスを初期化(ビルド後にも対応）
-        filepath = Application.dataPath + csvDataFile + stagename;
+        filepath = Application.dataPath + csvDataFile + stagename + ".csv";
         // スタンプネームリストに追加していく
         foreach(var v in stampList)
         {
@@ -306,6 +306,7 @@ public class ObjectGenerator : MonoBehaviour
     // ---------------------------------------------------
     // CSVファイルを基にスタンプを生成する
     // data スタンプの文字列情報リスト
+
     void StampGenerate(string[] data)
     {
         // 入ってきたデータの名前をもとにプレファブ生成
@@ -352,7 +353,6 @@ public class ObjectGenerator : MonoBehaviour
                     GameObject instance = (GameObject)Instantiate(objectPrefab,
                                                                     new Vector3(j, i+2f, k),
                                                                     Quaternion.identity);
-                    //instance.GetComponent<MeshRenderer>().enabled = false;
                     instance.GetComponentInChildren<Renderer>().material = materialList[0][4];
                     objects[i, j, k] = instance.GetComponent<Cube>();
 
@@ -418,7 +418,6 @@ public class ObjectGenerator : MonoBehaviour
     // ---------------------------------------------------------------------------
     // マルチなオブジェクトのマテリアルナンバーを取得
     // num オブジェクトナンバー
-
     int GetMaterialNumberforMutiple(int num)
     {
         if (num < MULTIPLE_NUM)
@@ -444,10 +443,6 @@ public class ObjectGenerator : MonoBehaviour
             Debug.Log("error:cubeHolder.GetMaterialMultipleNum()");
             return 0;
         }
-    }
-    IEnumerator Stamp(string[] data)
-    {
-        yield return null;
     }
     // ---------------------------------------------------------------------------
     // ステージロード中画面コルーチン

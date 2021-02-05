@@ -109,6 +109,7 @@ public class GrenadeThrow : MonoBehaviour
                         {
                             rb_ball.isKinematic = false;
                             rb_ball.AddForce(throwDirection + carRigid.velocity, ForceMode.Impulse); // カーソルの方向に力を一度加える
+                            // ボムを投げる効果音
                             audioSource.PlayOneShot(clip[0]);
                         }
                     }
@@ -120,7 +121,8 @@ public class GrenadeThrow : MonoBehaviour
                 {
                     if (count >= INTERVAL)
                     {
-                        BombStock++;                   
+                        BombStock++;
+                        // ボム回復効果音
                         audioSource.PlayOneShot(clip[1]);
                         count = 0f;
                     }
@@ -128,7 +130,6 @@ public class GrenadeThrow : MonoBehaviour
      
 
                 count += Time.deltaTime;
-                //Debug.Log(BombStock);
             }
 
         }
