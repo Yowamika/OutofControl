@@ -324,11 +324,12 @@ public class ObjectGenerator : MonoBehaviour
                 new Vector3(float.Parse(data[(int)StampDataType.POS_X]) + 1.0f,
                             float.Parse(data[(int)StampDataType.POS_Y]) + 1.0f,
                             float.Parse(data[(int)StampDataType.POS_Z]) + 1.0f), rot);
+            // Cubeリストに追加
             if (data[(int)StampDataType.STAMPNAME] != "Kabe" && data[(int)StampDataType.STAMPNAME] != "Kabe2")
             {
-                for (int i = 0; i < stampObject.transform.childCount; i++)
+                foreach(Transform child in stampObject.transform)
                 {
-                    cubeList.Add(stampObject.transform.GetChild(i).GetComponent<Cube>());
+                    cubeList.Add(child.GetComponent<Cube>());
                 }
             }
         }
@@ -478,7 +479,7 @@ public class ObjectGenerator : MonoBehaviour
                 BlockGenerate(d);
             }
 
-            if (i % 500 == 0)
+            if (i % 10 == 0)
             {
                 float progressVal = (float)i / (float)dataList.Count;
                 slider.value = progressVal;
