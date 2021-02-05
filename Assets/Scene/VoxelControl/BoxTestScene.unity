@@ -147,6 +147,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &276234279
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 276234280}
+  m_Layer: 0
+  m_Name: StampRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &276234280
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276234279}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &279866207 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1315108382597837839, guid: c21785267f42d1e4d80487b8ebb0fcd2,
@@ -396,7 +426,7 @@ MonoBehaviour:
   objectPrefab: {fileID: 2901210351014153015, guid: 5c820559cabd1e64d84c1a3feb22e3a2,
     type: 3}
   bedlock: {fileID: 311514637}
-  stagename: StageMasterFinal
+  stagename: LastMasterFinal
   cubeList: []
   cubeMatList: 
   objList:
@@ -434,6 +464,7 @@ MonoBehaviour:
   - {fileID: 4023570593889151668, guid: 4533fc02ca3a4604db89c16221d8d9ea, type: 3}
   - {fileID: 1714313010585123275, guid: 587092327f0c43344aa1cc45aa08cad4, type: 3}
   - {fileID: 197196222252776744, guid: be8c97e39189fa74d8a4bc9791d3d9c6, type: 3}
+  StampRoot: {fileID: 276234280}
   car: {fileID: 8357121054151014556}
   goal: {fileID: 1576590747}
   checkPoint: {fileID: 4924503406044258417, guid: d179e11ad251366418eec44930c8cd2a,

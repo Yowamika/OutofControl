@@ -72,6 +72,9 @@ public class ObjectGenerator : MonoBehaviour
     List<string> stampNameList = new List<string>();
     // ステージがロードできたかどうか
     bool isStageLoaded = false;
+    // スタンプを統べる親オブジェクト
+    [SerializeField]
+    Transform StampRoot;
     // 存在するオブジェクトの種類
     enum ObjectType
     {
@@ -157,6 +160,9 @@ public class ObjectGenerator : MonoBehaviour
         }
         // ディレクター取得
         director = this.GetComponent<GameDirector>();
+        // 親オブジェクトの最適化（よくわかってない）
+        StampRoot.hierarchyCapacity = 1000;
+        parentObject.hierarchyCapacity = 1000;
     }
     // ---------------------------------------------------
     // スタート関数
@@ -321,7 +327,7 @@ public class ObjectGenerator : MonoBehaviour
             GameObject stampObject = Instantiate(stampList[n],
                 new Vector3(float.Parse(data[(int)StampDataType.POS_X]) + 1.0f,
                             float.Parse(data[(int)StampDataType.POS_Y]) + 1.0f,
-                            float.Parse(data[(int)StampDataType.POS_Z]) + 1.0f), rot);
+                            float.Parse(data[(int)StampDataType.POS_Z]) + 1.0f), rot,StampRoot);
 
             //// Cubeリストに追加
             if (data[(int)StampDataType.STAMPNAME] != "Kabe" && data[(int)StampDataType.STAMPNAME] != "Kabe2")
@@ -355,7 +361,7 @@ public class ObjectGenerator : MonoBehaviour
                                                                     Quaternion.identity);
                     instance.GetComponentInChildren<Renderer>().material = materialList[0][4];
                     objects[i, j, k] = instance.GetComponent<Cube>();
-
+                    
                     // 親設定
                     objects[i, j, k].transform.parent = parentObject;
                     // 破片として登録
@@ -478,7 +484,7 @@ public class ObjectGenerator : MonoBehaviour
                 BlockGenerate(d);
             }
 
-            if (i % 20 == 0)
+            if (i % 25 == 0)
             {
                 float progressVal = (float)i / (float)dataList.Count;
                 slider.value = progressVal;

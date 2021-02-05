@@ -53,11 +53,9 @@ public class CheckPointSeener : MonoBehaviour
                 rectTransform.sizeDelta = new Vector2(siz, siz);
             }
         }
-        //Debug.Log(canvas.GetComponent<RectTransform>().sizeDelta.x);
         if(isSeen)
         {
             rectTransform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, this.transform.position);
-            //Debug.Log(rectTransform.position);
         }
         else
         {
@@ -66,7 +64,6 @@ public class CheckPointSeener : MonoBehaviour
 
             // （画面中心を原点(0,0)とした）ターゲットのスクリーン座標を求める
             var pos = Camera.main.WorldToScreenPoint(this.transform.position) - center;
-            Debug.Log(pos);
             if (pos.z < 0f)
             {
                 pos.x = -pos.x;
